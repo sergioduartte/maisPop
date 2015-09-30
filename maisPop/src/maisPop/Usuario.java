@@ -74,12 +74,11 @@ public class Usuario {
 		SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy");
 		df.setLenient(false);
 		
-		Date resultado;
 		if (!m.matches()) {
 			throw new Exception(ERRO_DE_CADASTRO + "Formato de data esta invalida.");
 		} else {
 			try {
-				resultado = df.parse(dataDeNascimento);
+				LocalDate data = transformaData(dataDeNascimento);
 			} catch (Exception e) {
 				throw new Exception(ERRO_DE_CADASTRO + "Data nao existe.");
 			}
@@ -97,7 +96,6 @@ public class Usuario {
 	}
 
 	public Usuario(String nome, String email, String senha, String dataDeNasc, String imagem) throws Exception {
-		// TODO Auto-generated constructor stub
 		setNome(nome);
 		setEmail(email);
 		setSenha(senha);
