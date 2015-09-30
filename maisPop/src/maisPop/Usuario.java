@@ -2,6 +2,7 @@ package maisPop;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -17,6 +18,7 @@ public class Usuario {
 	public static String SENHA = "Senha";
 	public static String DATA_DE_NASCIMENTO = "Data de Nascimento";
 	public static String FOTO = "Foto";
+	
 	
 	public String getNome() {
 		return nome;
@@ -54,7 +56,15 @@ public class Usuario {
 	}
 
 	public String getDataDeNascimento() {
-		return dataDeNascimento;
+		return transformaData(dataDeNascimento).toString();
+	}
+	
+	public LocalDate transformaData(String dataDeNascimento){
+		String[] dataSplit = dataDeNascimento.split("/");
+		int dia = Integer.parseInt(dataSplit[0].trim());
+		int mes = Integer.parseInt(dataSplit[1].trim());
+		int ano = Integer.parseInt(dataSplit[2].trim());
+		return LocalDate.of(ano,mes,dia);
 	}
 
 	public void setDataDeNascimento(String dataDeNascimento) throws Exception {		
