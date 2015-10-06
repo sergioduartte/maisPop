@@ -1,70 +1,55 @@
 package maisPop;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import maisPop.Controller;
 import easyaccept.EasyAccept;
 
 public class Facade {
-	
-	private List<Usuario> bancoDeUsuarios;
-	
-	public Facade() {
-		bancoDeUsuarios = new ArrayList<Usuario>();
-	}
-	
+
 	public static void main(String[] args) {
 		String[] files = new String[] { "maisPop.Facade", "testes/scripts_de_teste/usecase_1.txt" };
 		EasyAccept.main(files);
 	}
-	
-	public void iniciaSistema() {
-		// TODO ler arquivos serializados.
-	}
 
-	public void fechaSistema() {
-		// TODO serializar arquivos.
+	private Controller controlador;
+
+	public Facade() {
+		controlador = new Controller();
 	}
 
 	public String cadastraUsuario(String nome, String email, String senha, String dataDeNasc) throws Exception {
-		return cadastraUsuario(nome, email, senha, dataDeNasc, "resources/default.jpg");
+		return controlador.cadastraUsuario(nome, email, senha, dataDeNasc);
 	}
 
 	public String cadastraUsuario(String nome, String email, String senha, String dataDeNasc, String imagem)
 			throws Exception {
-		Usuario usr = new Usuario(nome, email, senha, dataDeNasc, imagem);
-		bancoDeUsuarios.add(usr);
-		return usr.getEmail();
-	
-	}
-	
-	public String getInfoUsuario(String atributo, String usuario) throws Exception{
-		Usuario usr = retornaUsuarioPorEmail(usuario);
-		String data = usr.getDataDeNascimento();
-		
-		String saida = "";
-		if (atributo.equals(Usuario.NOME)){
-			saida = usr.getNome();
-		} else if (atributo.equals(Usuario.EMAIL)){
-			saida = retornaUsuarioPorEmail(atributo).getEmail();
-		} else if (atributo.equals(Usuario.SENHA)){
-			throw new Exception("A senha dx usuarix eh protegida.");
-		} else if (atributo.equals(Usuario.DATA_DE_NASCIMENTO)){
-			saida = data;
-		} else if (atributo.equals(Usuario.FOTO)){
-			saida = usr.getCaminhoImagem();
-		}
-		return saida;
+		return controlador.cadastraUsuario(nome, email, senha, dataDeNasc, imagem);
 	}
 
-	private Usuario retornaUsuarioPorEmail(String usuarioEmail) throws Exception{
-		for (Usuario usuario : bancoDeUsuarios) {
-			if (usuario.getEmail().equals(usuarioEmail)){
-				return usuario;
-			}
-		}
-		throw new Exception("Um usuarix com email " + usuarioEmail + " nao esta cadastradx.");
+	public void fechaSistema() throws Exception {
+		controlador.fechaSistema();
 	}
 
+	public String getInfoUsuario(String atributo) throws Exception {
+		return controlador.getInfoUsuario(atributo);
 	}
 
+	public String getInfoUsuario(String atributo, String email) throws Exception {
+		return controlador.getInfoUsuario(atributo, email);
+	}
+
+	public void iniciaSistema() {
+		controlador.iniciaSistema();
+	}
+
+	public void login(String email, String senha) throws Exception {
+		controlador.login(email, senha);
+	}
+
+	public void logout() throws Exception {
+		controlador.logout();
+	}
+
+	public void removeUsuario(String idDoUsuario) throws Exception {
+		controlador.removeUsuario(idDoUsuario);
+	}
+}
