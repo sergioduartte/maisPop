@@ -7,7 +7,7 @@ import java.util.regex.Pattern;
 public class Usuario {
 
 	public static String NOME = "Nome";
-	public static String EMAIL = "Email";
+	public static String EMAIL = "E-mail";
 	public static String SENHA = "Senha";
 	public static String DATA_DE_NASCIMENTO = "Data de Nascimento";
 	public static String FOTO = "Foto";
@@ -15,6 +15,7 @@ public class Usuario {
 	private String nome, email, senha, dataDeNascimento, caminhoImagem;
 
 	private final String ERRO_DE_CADASTRO = "Erro no cadastro de Usuarios. ";
+	private final String ERRO_DE_ATUALIZACAO = "Erro na atualizacao de perfil. ";
 
 	public Usuario(String nome, String email, String senha, String dataDeNasc, String imagem) throws Exception {
 		setNome(nome);
@@ -52,13 +53,20 @@ public class Usuario {
 		Pattern p = Pattern.compile("[\\d]{2}/[\\d]{2}/[\\d]{4}");
 		Matcher m = p.matcher(dataDeNascimento);
 
-		if (!m.matches()) {
+		if (!m.matches() && this.dataDeNascimento == null) {
 			throw new Exception(ERRO_DE_CADASTRO + "Formato de data esta invalida.");
+			
+		} else if (!m.matches() && this.dataDeNascimento != null){
+			throw new Exception(ERRO_DE_ATUALIZACAO + "Formato de data esta invalida.");
 		} else {
 			try {
 				LocalDate data = transformaData(dataDeNascimento);
 			} catch (Exception e) {
+				if (this.dataDeNascimento != null){
+					throw new Exception( ERRO_DE_ATUALIZACAO + "Data nao existe.");
+				} else {
 				throw new Exception(ERRO_DE_CADASTRO + "Data nao existe.");
+				}
 			}
 			this.dataDeNascimento = dataDeNascimento;
 		}
@@ -67,7 +75,10 @@ public class Usuario {
 	public void setEmail(String email) throws Exception {
 		Pattern p = Pattern.compile("[\\w\\d_\\.%\\+-]+@[\\w\\d\\.-]+\\.[\\w]{2,6}");
 		Matcher m = p.matcher(email);
-
+		
+		if (this.email != null && !m.matches()){
+			throw new Exception(ERRO_DE_ATUALIZACAO + "Formato de e-mail esta invalido.");
+		}
 		if (m.matches()) {
 			this.email = email;
 		} else {
@@ -76,6 +87,9 @@ public class Usuario {
 	}
 
 	public void setNome(String nome) throws Exception {
+		if ((this.nome != null) && (nome.trim().length() == 0) ){
+			throw new Exception(ERRO_DE_ATUALIZACAO + "Nome dx usuarix nao pode ser vazio.");
+		}
 		if (nome.trim().length() > 0) {
 			this.nome = nome;
 		} else {

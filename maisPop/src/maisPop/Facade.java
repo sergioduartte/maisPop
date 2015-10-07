@@ -6,7 +6,8 @@ import easyaccept.EasyAccept;
 public class Facade {
 
 	public static void main(String[] args) {
-		String[] files = new String[] { "maisPop.Facade", "testes/scripts_de_teste/usecase_1.txt" };
+		String[] files = new String[] { "maisPop.Facade", "testes/scripts_de_teste/usecase_1.txt",
+															"testes/scripts_de_teste/usecase_2.txt"};
 		EasyAccept.main(files);
 	}
 
@@ -51,5 +52,12 @@ public class Facade {
 
 	public void removeUsuario(String idDoUsuario) throws Exception {
 		controlador.removeUsuario(idDoUsuario);
+	}
+	
+	public void atualizaPerfil(String atributo, String valor) throws Exception{
+		controlador.atualizaPerfil(atributo, valor);
+	}
+	public void atualizaPerfil(String atributo, String novaSenha, String velhaSenha) throws Exception{
+		controlador.atualizaPerfil(atributo, novaSenha, velhaSenha);
 	}
 }

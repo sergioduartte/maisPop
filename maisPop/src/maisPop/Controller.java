@@ -50,7 +50,6 @@ public class Controller {
 
 	public String getInfoUsuario(String atributo, String email) throws Exception {
 		Usuario usr = retornaUsuarioPorEmail(email);
-		String data = usr.getDataDeNascimento();
 		String saida = "";
 
 		if (atributo.equals(Usuario.NOME)) {
@@ -60,7 +59,7 @@ public class Controller {
 		} else if (atributo.equals(Usuario.SENHA)) {
 			throw new Exception("A senha dx usuarix eh protegida.");
 		} else if (atributo.equals(Usuario.DATA_DE_NASCIMENTO)) {
-			saida = data;
+			saida = usr.getDataDeNascimento();
 		} else if (atributo.equals(Usuario.FOTO)) {
 			saida = usr.getCaminhoImagem();
 		}
@@ -126,6 +125,33 @@ public class Controller {
 
 	public void setUsuarioLogado(boolean b) {
 		this.temUsuarioLogado = b;
+	}
+	
+	public void atualizaPerfil(String atributo, String valor) throws Exception{
+		if (!temUsuarioLogado){
+			throw new Exception("Nao eh possivel atualizar um perfil. Nenhum usuarix esta logadx no +pop.");
+		}
+		if (atributo.equals(usuarioLogado.NOME)){
+			usuarioLogado.setNome(valor);
+		} else if (atributo.equals(usuarioLogado.EMAIL)){
+			usuarioLogado.setEmail(valor);
+		} else if (atributo.equals(usuarioLogado.DATA_DE_NASCIMENTO)){
+			usuarioLogado.setDataDeNascimento(valor);
+		} else if (atributo.equals(usuarioLogado.FOTO)){
+			usuarioLogado.setCaminhoImagem(valor);
+		}
+	}
+	public void atualizaPerfil(String atributo, String novaSenha, String velhaSenha) throws Exception{
+		if (!temUsuarioLogado){
+			throw new Exception("Nao eh possivel atualizar um perfil. Nenhum usuarix esta logadx no +pop.");
+		}
+		if (atributo.equals(usuarioLogado.SENHA)){
+			if (velhaSenha.equals(usuarioLogado.getSenha())){
+				usuarioLogado.setSenha(novaSenha);
+			} else {
+				throw new Exception ("Erro na atualizacao de perfil. A senha fornecida esta incorreta.");
+			}
+		}
 	}
 
 }
