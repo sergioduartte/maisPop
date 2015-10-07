@@ -109,4 +109,9 @@ public class Usuario {
 		return LocalDate.of(ano, mes, dia);
 	}
 
+	public Postagem criaPost(String mensagem, String data) throws Exception {
+		Postagem post = new Postagem(mensagem, data);
+		return post;
+	}
+
 }

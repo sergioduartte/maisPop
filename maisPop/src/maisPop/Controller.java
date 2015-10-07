@@ -154,4 +154,10 @@ public class Controller {
 		}
 	}
 
+	public void criaPost(String mensagem, String data) throws Exception {
+		Postagem post = usuarioLogado.criaPost(mensagem,data);
+//		mural.addPost(post);
+//		feed.addPost(post);		
+	}
+
 }
