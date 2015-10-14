@@ -3,6 +3,7 @@ package maisPop;
 import java.time.LocalDate;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.ArrayList;
 
 public class Usuario {
 
@@ -13,6 +14,8 @@ public class Usuario {
 	public static String FOTO = "Foto";
 
 	private String nome, email, senha, dataDeNascimento, caminhoImagem;
+	private ArrayList<String> notificacoes;
+	private ArrayList<String> amigos;
 
 	private final String ERRO_DE_CADASTRO = "Erro no cadastro de Usuarios. ";
 	private final String ERRO_DE_ATUALIZACAO = "Erro na atualizacao de perfil. ";
@@ -27,6 +30,29 @@ public class Usuario {
 
 	public String getCaminhoImagem() {
 		return caminhoImagem;
+	}
+	
+	public ArrayList<String> getAmigos(){
+		return amigos;
+	}
+
+	public ArrayList<String> getListaNotificacoes() {
+		return notificacoes;
+	}
+	
+	public int getNotificacoes(){
+		return notificacoes.size();
+	}
+	
+	public String getNextNotificacao() throws Exception{
+		for (String string : notificacoes) {
+			return string;
+		}
+		throw new Exception("Nao ha mais notificacoes");
+	}
+	
+	public int getQtdAmigos(){
+		return amigos.size();
 	}
 
 	public String getDataDeNascimento() {

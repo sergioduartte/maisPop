@@ -66,4 +66,32 @@ public class Facade {
 	public void criaPost(String mensagem, String data) throws Exception{
 		controlador.criaPost(mensagem, data);
 	}
+	
+	public void adicionaAmigo(String usuarioEmail) throws Exception{
+		controlador.adicionaAmigo(usuarioEmail);
+	}
+	
+	public void aceitaAmizade(String usuarioEmail) throws Exception{
+		controlador.aceitaAmizade(usuarioEmail);
+	}
+	
+	public void rejeitaAmizade(String usuarioEmail) throws Exception{
+		controlador.rejeitaAmizade(usuarioEmail);
+	}
+	
+	public void removeAmigo(String usuarioEmail) throws Exception{
+		controlador.removeAmigo(usuarioEmail);
+	}
+	
+	public String getNextNotificacao() throws Exception{
+		return controlador.getNextNotificacao();
+	}
+	
+	public int getQtdAmigos(){
+		return controlador.getQtdAmigos();
+	}
+	
+	public int getNotificacoes(){
+		return controlador.getNotificacoes();
+	}
 }
