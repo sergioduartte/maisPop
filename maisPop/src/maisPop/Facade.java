@@ -71,9 +71,9 @@ public class Facade {
 		
 	}
 	
-/*	public String getPost(String atributo, int post) throws Exception{
+	public String getPost(String atributo, int post) throws Exception{
 		return controlador.getPost(atributo, post);
-	}*/
+	}
 	
 	public String getConteudoPost(int indice, int post) throws Exception{
 		return controlador.getConteudoPost(indice, post);

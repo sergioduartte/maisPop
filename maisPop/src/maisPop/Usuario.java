@@ -128,7 +128,7 @@ public class Usuario {
 		return mural.get(post);
 	}
 
-/*	public String getPost(String atributo, int post) throws Exception {
+	public String getPost(String atributo, int post) throws Exception {
 		Postagem p;
 		String saida = "";
 		try {
@@ -139,33 +139,21 @@ public class Usuario {
 		if (atributo.equals(MENSAGEM)) {
 			return p.getMensagemSemHashtag();
 		} else if (atributo.equals(DATA_DA_POSTAGEM)) {
-			return p.getDataDaPostagem();
+			return p.getData();
 		} else if (atributo.equals(HASHTAGS)) {
 			return p.getHashtags();
 		} else {
 			throw new Exception("atributo invalido.");
 		}
-	}*/
+	}
 
 	public String getConteudoPost(int indice, int post) throws Exception {
-		Postagem p;
-		String saida = "";
-		try {
-			p = mural.get(post);
-		} catch (Exception e) {
-			throw new Exception("dando erro no indice");
-		}/*
-		if (indice == 0) {
-			return p.getMensagemPura();
-		} else if (indice == 1) {
-			return p.getArquivosDaMensagem();
-		} else if (indice == 2) {
-			return p.getHashtags();
-		} else if (indice >= p.toString().split(" ").length || indice < 0){
+		if (indice < 0){
 			throw new Exception("Requisicao invalida. O indice deve ser maior ou igual a zero.");
-		}*/
-		
-		return null;
+		}
+		Postagem p;
+		p = mural.get(post);
+		return p.getConteudo(indice);
 	}
 
 }

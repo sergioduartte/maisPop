@@ -2,7 +2,6 @@ package maisPop;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -14,20 +13,15 @@ public class Postagem {
 	private ArrayList<String> mensagemPura;
 	private ArrayList<String> hashtags;
 	private ArrayList<String> arquivos;
-
-	// tipos de saida
-	private static String COMPLETA = "MensagemCompleta";
-	private static String SEM_ARQUIVOS = "MensagemSemArquivos"; // e com hashtags
-	private static String SEM_HASHTAG = "MensagemSemHashtag"; // e com arquivos
-	private static String PURA = "MensagemPura";
-	private static String DATA = "Data";
+	private ArrayList<String> conteudo;
 
 	private static String ERRO_DE_CRIACAO = "Nao eh possivel criar o post. ";
 
 	public Postagem(String mensagem, String data) throws Exception {
 		hashtags = new ArrayList<String>();
 		arquivos = new ArrayList<String>();
-		mensagemPura= new ArrayList<String>();
+		mensagemPura = new ArrayList<String>();
+		conteudo = new ArrayList<>();
 		setMensagem(mensagem);
 		validaMensagem();
 		setPopularidade(0);
@@ -45,24 +39,30 @@ public class Postagem {
 
 	private void setMensagem(String mensagem) throws Exception {
 		this.mensagem = mensagem;
-		
+
 		String[] msg = mensagem.split(" ");
 		String padraoHashtag = "#\\w+";
 		String padraoAudio = "<audio>.*?</audio>";
 		String padraoVideo = "<video>.*?</video>";
 		String padraoImagem = "<imagem>.*?</imagem>";
-		
+
 		for (int i = 0; i < msg.length; i++) {
-			if (	msg[i].matches(padraoAudio) || 
-					msg[i].matches(padraoVideo) ||
-					msg[i].matches(padraoImagem)){
+			if (msg[i].matches(padraoAudio)) {
+				conteudo.add("$arquivo_audio:" + msg[i].replaceAll("</?audio>", ""));
+				arquivos.add(msg[i].trim());
+			} else if (msg[i].matches(padraoVideo)) {
+				conteudo.add("$arquivo_video:" + msg[i].replaceAll("</?video>", ""));
+				arquivos.add(msg[i].trim());
+			} else if (msg[i].matches(padraoImagem)) {
+				conteudo.add("$arquivo_imagem:" + msg[i].replaceAll("</?imagem>", ""));
 				arquivos.add(msg[i]);
-			} else if(msg[i].matches(padraoHashtag)){
-				hashtags.add(msg[i]);	
-			} else{
+			} else if (msg[i].matches(padraoHashtag)) {
+				hashtags.add(msg[i]);
+			} else {
 				mensagemPura.add(msg[i].trim());
 			}
 		}
+		conteudo.add(0, getMensagemPura());
 	}
 
 	private void validaMensagem() throws Exception {
@@ -82,60 +82,74 @@ public class Postagem {
 		}
 	}
 
-/*	private String retornaPorTipo(String tipoDeSaida) throws Exception {
-		String saida = "";
-		if (tipoDeSaida.equals(COMPLETA)) {
-			saida = this.mensagem;
-		} else if (tipoDeSaida.equals(SEM_ARQUIVOS)) {
-			saida = getMensagemSemArquivos(mensagem);
-		} else if (tipoDeSaida.equals(SEM_HASHTAG)) {
-//			saida = getMensagemSemHashtags(mensagem);
-		} else if (tipoDeSaida.equals(PURA)) {
-			saida = getMensagemPura();
-		} else if (tipoDeSaida.equals(DATA)) {
-			saida = getData();
-		}
-
-		return saida;
-	}*/
-
-	private String getData() {
+	public String getData() {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		return sdf.format(data);
 	}
 
-	private String getMensagemPura() throws Exception {
+	public String getMensagemPura() throws Exception {
 		StringBuilder saida = new StringBuilder();
 		for (int i = 0; i < mensagemPura.size(); i++) {
-			if (i == mensagemPura.size()) {
+			if (i == mensagemPura.size() - 1) {
 				saida.append(mensagemPura.get(i));
-			} else{
+			} else {
 				saida.append(mensagemPura.get(i) + " ");
 			}
 		}
 		return saida.toString();
 	}
 
-	private String getMensagemSemHashtags() throws Exception {
-		String[] msgTemp = this.mensagem.split(" ");
-		String saida = "";
-		//TODO fazer um for varrendo as hashtags, se estiver na lista de msgTemp, replace("").
-		/*for (int i = 0; i < msgTemp.length; i++) {
-			if (msgTemp[i].charAt(0) != '#'){
-				this.hashTags.append
+	public String getMensagemSemHashtag() throws Exception {
+		StringBuilder saida = new StringBuilder();
+		String[] msg = mensagem.split("\\s");
+		for (int i = 0; i < msg.length; i++) {
+			if (!msg[i].matches("#\\w+")) {
+				saida.append(msg[i]);
 			}
-		}*/
+			if (i < msg.length - 1) {
+				saida.append(" ");
+			}
+		}
+		return saida.toString().trim();
+	}
+
+	public String getHashtags() {
+		StringBuilder saida = new StringBuilder();
+		for (int i = 0; i < hashtags.size(); i++) {
+			saida.append(hashtags.get(i));
+			if (i != hashtags.size() - 1) {
+				saida.append(",");
+			}
+		}
 		return saida.toString();
 	}
 
-	private String getMensagemSemArquivos(String mensagem) {
-		//TODO implementar com regex
-		return null;
+	public String getArquivosDaMensagem() {
+		StringBuilder saida = new StringBuilder();
+		for (int i = 0; i < arquivos.size(); i++) {
+			saida.append(arquivos.get(i));
+			if (i < arquivos.size() - 1) {
+				saida.append(" ");
+			}
+		}
+
+		return saida.toString();
 	}
+
+	public String getConteudo(int indice) throws Exception {
+		try {
+			return conteudo.get(indice);
+		} catch (Exception e) {
+			throw new Exception("Item #" + indice + " nao existe nesse post, ele possui apenas " + conteudo.size()
+					+ " itens distintos.");
+		}
+	}
+
 	@Override
 	public String toString() {
 		String saida = this.mensagem;
 		saida += " (" + getData() + ")";
 		return saida;
 	}
+
 }

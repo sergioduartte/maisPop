@@ -164,9 +164,9 @@ public class Controller {
 		
 	}
 
-/*	public String getPost(String atributo, int post) throws Exception {
+	public String getPost(String atributo, int post) throws Exception {
 		return usuarioLogado.getPost(atributo, post);
-	}*/
+	}
 
 	public String getConteudoPost(int indice, int post) throws Exception {
 		return usuarioLogado.getConteudoPost(indice, post);
