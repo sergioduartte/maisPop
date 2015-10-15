@@ -187,7 +187,12 @@ public class Controller {
 	public void adicionaNotificacao(String usuarioEmail, String notificacao) throws Exception {
 		Usuario usr = retornaUsuarioPorEmail(usuarioEmail);
 		usr.getListaNotificacoes().add(notificacao);
-		usr.getListaNotificacoesNaoLidas().add(notificacao);
+	}
+	
+	public void adicionaSolicitacao(String usuarioEmail, String solicitacao) throws Exception {
+		Usuario usr = retornaUsuarioPorEmail(usuarioEmail);
+		usr.getSolicitacoes().add(solicitacao);
+
 	}
 
 	public void adicionaAmigo(String usuarioEmail) throws Exception {
@@ -196,6 +201,7 @@ public class Controller {
 		}
 		String mensagem = usuarioLogado.getNome() + " quer sua amizade.";
 		adicionaNotificacao(usuarioEmail, mensagem);
+		adicionaSolicitacao(usuarioEmail, mensagem);
 	}
 
 	public void aceitaAmizade(String usuarioEmail) throws Exception {
@@ -246,8 +252,9 @@ public class Controller {
 
 	public boolean temSolicitacao(Usuario usr) {
 		String mensagem = usr.getNome() + " quer sua amizade.";
-		for (String solicitacao : usuarioLogado.getListaNotificacoes()) {
+		for (String solicitacao : usuarioLogado.getSolicitacoes()) {
 			if (solicitacao.equals(mensagem)) {
+				usuarioLogado.getSolicitacoes().remove(solicitacao);
 				return true;
 			}
 		}

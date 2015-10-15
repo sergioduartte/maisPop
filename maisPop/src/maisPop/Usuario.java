@@ -18,7 +18,7 @@ public class Usuario {
 
 	private String nome, email, senha, dataDeNascimento, caminhoImagem;
 	private ArrayList<String> notificacoes;
-	private ArrayList<String> notificacoesNaoLidas;
+	private ArrayList<String> solicitacoes;
 	private ArrayList<String> amigos;
 	private ArrayList<Postagem> mural;
 
@@ -33,7 +33,7 @@ public class Usuario {
 		setCaminhoImagem(imagem);
 		this.amigos = new ArrayList<String>();
 		this.notificacoes = new ArrayList<String>();
-		this.notificacoesNaoLidas = new ArrayList<String>();
+		this.solicitacoes = new ArrayList<String>();
 		this.mural = new ArrayList<Postagem>();
 
 	}
@@ -50,17 +50,17 @@ public class Usuario {
 		return notificacoes;
 	}
 	
-	public ArrayList<String> getListaNotificacoesNaoLidas() {
-		return notificacoesNaoLidas;
+	public ArrayList<String> getSolicitacoes() {
+		return solicitacoes;
 	}
 	
 	public int getNotificacoes(){
-		return notificacoesNaoLidas.size();
+		return notificacoes.size();
 	}
 	
 	public String getNextNotificacao() throws Exception{
-		for (String string : notificacoesNaoLidas) {
-			notificacoesNaoLidas.remove(string);
+		for (String string : notificacoes) {
+			notificacoes.remove(string);
 			return string;
 		}
 		throw new Exception("Nao ha mais notificacoes.");
