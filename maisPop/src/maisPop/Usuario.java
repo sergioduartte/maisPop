@@ -51,15 +51,11 @@ public class Usuario {
 			notificacoes.remove(string);
 			return string;
 		}
-		throw new Exception("Nao ha mais notificacoes");
+		throw new Exception("Nao ha mais notificacoes.");
 	}
 	
 	public int getQtdAmigos(){
-		int qtdAmigos = amigos.size();
-		if (qtdAmigos < 0) {
-			qtdAmigos = 0;
-		}
-		return qtdAmigos;
+		 return amigos.size();
 	}
 
 	public String getDataDeNascimento() {
