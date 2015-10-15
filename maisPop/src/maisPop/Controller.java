@@ -183,6 +183,7 @@ public class Controller {
 	public void adicionaNotificacao(String usuarioEmail, String notificacao) throws Exception{
 		Usuario usr = retornaUsuarioPorEmail(usuarioEmail);
 		usr.getListaNotificacoes().add(notificacao);
+		usr.getListaNotificacoesNaoLidas().add(notificacao);
 	}
 	
 	public void adicionaAmigo(String usuarioEmail) throws Exception{
