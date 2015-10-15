@@ -154,10 +154,22 @@ public class Controller {
 		}
 	}
 
-	public void criaPost(String mensagem, String data) throws Exception {
-		Postagem post = usuarioLogado.criaPost(mensagem,data);
-//		mural.addPost(post);
-//		feed.addPost(post);		
+	public void criaPost(String mensagem, String data) throws Exception{
+		Postagem post = usuarioLogado.criaPost(mensagem, data);
+		usuarioLogado.adicionaNoMural(post);
+	}
+
+	public Postagem getPost(int post) {
+		return usuarioLogado.getPost(post);
+		
+	}
+
+	public String getPost(String atributo, int post) throws Exception {
+		return usuarioLogado.getPost(atributo, post);
+	}
+
+	public String getConteudoPost(int indice, int post) throws Exception {
+		return usuarioLogado.getConteudoPost(indice, post);
 	}
 	
 	public void adicionaNotificacao(String usuarioEmail, String notificacao) throws Exception{
