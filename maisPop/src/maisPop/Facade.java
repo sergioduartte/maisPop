@@ -9,7 +9,7 @@ public class Facade {
 		String[] files = new String[] { "maisPop.Facade", "testes/scripts_de_teste/usecase_1.txt",
 															"testes/scripts_de_teste/usecase_2.txt",
 															"testes/scripts_de_teste/usecase_3.txt",
-															"testes/scripts_de_teste/usecase_4.txt"	};
+															"testes/scripts_de_teste/usecase_4.txt"};
 		EasyAccept.main(files);
 	}
 
@@ -93,5 +93,19 @@ public class Facade {
 	
 	public int getNotificacoes(){
 		return controlador.getNotificacoes();
+	}
+	
+	public Postagem getPost(int post){
+		return controlador.getPost(post);
+		
+	}
+	
+	public String getPost(String atributo, int post) throws Exception{
+		return controlador.getPost(atributo, post);
+	}
+	
+	public String getConteudoPost(int indice, int post) throws Exception{
+		return controlador.getConteudoPost(indice, post);
+
 	}
 }
