@@ -19,7 +19,7 @@ logout
 login email="madonna@email.com" senha="iamawesome"
 expect 0 getQtdAmigos
 expect 1 getNotificacoes
-expect "Fatima Bernades Bonner quer sua amizade." getNextNotificacao
+expect "Fatima Bernardes Bonner quer sua amizade." getNextNotificacao
 aceitaAmizade usuario="fafa_bernardes@email.com.br"
 
 expect 1 getQtdAmigos

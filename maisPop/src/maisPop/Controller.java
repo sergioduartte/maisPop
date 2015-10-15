@@ -172,6 +172,14 @@ public class Controller {
 		return usuarioLogado.getConteudoPost(indice, post);
 	}
 	
+	public void curtirPost(String usuarioEmail, int post) throws Exception{
+		if (!temUsuarioLogado){
+			throw new Exception("Nao eh possivel enviar solicitacao. Nenhum usuarix esta logadx no +pop.");
+		}
+		Usuario usr = retornaUsuarioPorEmail(usuarioEmail);
+		adicionaNotificacao(usuarioEmail, usuarioLogado.getNome() + " curtiu seu post de " + usr.getPost(usr.DATA_DA_POSTAGEM, post) + ".");
+	}
+	
 	public void adicionaNotificacao(String usuarioEmail, String notificacao) throws Exception{
 		Usuario usr = retornaUsuarioPorEmail(usuarioEmail);
 		usr.getListaNotificacoes().add(notificacao);
@@ -189,8 +197,8 @@ public class Controller {
 		if (!temUsuarioLogado){
 			throw new Exception("Nao eh possivel adicionar amigo. Nenhum usuarix esta logadx no +pop.");
 		}
-		usuarioLogado.getAmigos().add(usuarioEmail);
 		Usuario usr = retornaUsuarioPorEmail(usuarioEmail);
+		usuarioLogado.getAmigos().add(usuarioEmail);
 		usr.getAmigos().add(usuarioLogado.getEmail()); 
 		adicionaNotificacao(usuarioEmail, usuarioLogado.getNome() + " aceitou sua amizade.");
 	}
@@ -198,6 +206,10 @@ public class Controller {
 	public void rejeitaAmizade(String usuarioEmail) throws Exception{
 		if (!temUsuarioLogado){
 			throw new Exception("Nao eh possivel adicionar amigo. Nenhum usuarix esta logadx no +pop.");
+		}
+		Usuario usr = retornaUsuarioPorEmail(usuarioEmail);
+		if(!temSolicitacao(usr)){
+			throw new Exception(usr.getNome() + " nao lhe enviou solicitacoes de amizade.");
 		}
 		adicionaNotificacao(usuarioEmail, usuarioLogado.getNome() + " rejeitou sua amizade.");
 	}
@@ -222,6 +234,16 @@ public class Controller {
 	
 	public int getNotificacoes(){
 		return usuarioLogado.getNotificacoes();
+	}
+	
+	public boolean temSolicitacao(Usuario usr){
+		String mensagem = usr.getNome() + " quer sua amizade.";
+		for (String solicitacao : usuarioLogado.getListaNotificacoes()) {
+			if (solicitacao.equals(mensagem)) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 }

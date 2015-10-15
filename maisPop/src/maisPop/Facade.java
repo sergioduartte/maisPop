@@ -96,8 +96,7 @@ public class Facade {
 	}
 	
 	public Postagem getPost(int post){
-		return controlador.getPost(post);
-		
+		return controlador.getPost(post);	
 	}
 	
 	public String getPost(String atributo, int post) throws Exception{
@@ -107,5 +106,9 @@ public class Facade {
 	public String getConteudoPost(int indice, int post) throws Exception{
 		return controlador.getConteudoPost(indice, post);
 
+	}
+	
+	public void curtirPost(String usuarioEmail, int post) throws Exception{
+		controlador.curtirPost(usuarioEmail, post);
 	}
 }
