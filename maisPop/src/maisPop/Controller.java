@@ -171,5 +171,57 @@ public class Controller {
 	public String getConteudoPost(int indice, int post) throws Exception {
 		return usuarioLogado.getConteudoPost(indice, post);
 	}
+	
+	public void adicionaNotificacao(String usuarioEmail, String notificacao) throws Exception{
+		Usuario usr = retornaUsuarioPorEmail(usuarioEmail);
+		usr.getListaNotificacoes().add(notificacao);
+	}
+	
+	public void adicionaAmigo(String usuarioEmail) throws Exception{
+		if (!temUsuarioLogado){
+			throw new Exception("Nao eh possivel enviar solicitacao. Nenhum usuarix esta logadx no +pop.");
+		}
+		String mensagem = usuarioLogado.getNome() + " quer sua amizade.";
+		adicionaNotificacao(usuarioEmail, mensagem);
+	}
+	
+	public void aceitaAmizade(String usuarioEmail) throws Exception{
+		if (!temUsuarioLogado){
+			throw new Exception("Nao eh possivel adicionar amigo. Nenhum usuarix esta logadx no +pop.");
+		}
+		usuarioLogado.getAmigos().add(usuarioEmail);
+		Usuario usr = retornaUsuarioPorEmail(usuarioEmail);
+		usr.getAmigos().add(usuarioLogado.getEmail()); 
+		adicionaNotificacao(usuarioEmail, usuarioLogado.getNome() + " aceitou sua amizade.");
+	}
+	
+	public void rejeitaAmizade(String usuarioEmail) throws Exception{
+		if (!temUsuarioLogado){
+			throw new Exception("Nao eh possivel adicionar amigo. Nenhum usuarix esta logadx no +pop.");
+		}
+		adicionaNotificacao(usuarioEmail, usuarioLogado.getNome() + " rejeitou sua amizade.");
+	}
+	
+	public void removeAmigo(String usuarioEmail) throws Exception{
+		if (!temUsuarioLogado){
+			throw new Exception("Nao eh possivel adicionar amigo. Nenhum usuarix esta logadx no +pop.");
+		}
+		usuarioLogado.getAmigos().remove(usuarioEmail);
+		Usuario usr = retornaUsuarioPorEmail(usuarioEmail);
+		usr.getAmigos().remove(usuarioLogado.getEmail());
+		adicionaNotificacao(usuarioEmail, usuarioLogado.getNome() + " removeu a sua amizade.");
+	}
+	
+	public String getNextNotificacao() throws Exception{
+		return usuarioLogado.getNextNotificacao();
+	}
+	
+	public int getQtdAmigos(){
+		return usuarioLogado.getQtdAmigos();
+	}
+	
+	public int getNotificacoes(){
+		return usuarioLogado.getNotificacoes();
+	}
 
 }

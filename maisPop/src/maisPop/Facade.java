@@ -8,7 +8,8 @@ public class Facade {
 	public static void main(String[] args) {
 		String[] files = new String[] { "maisPop.Facade", "testes/scripts_de_teste/usecase_1.txt",
 															"testes/scripts_de_teste/usecase_2.txt",
-															"testes/scripts_de_teste/usecase_3.txt"};
+															"testes/scripts_de_teste/usecase_3.txt",
+															"testes/scripts_de_teste/usecase_4.txt"};
 		EasyAccept.main(files);
 	}
 
@@ -66,6 +67,34 @@ public class Facade {
 		controlador.criaPost(mensagem, data);
 	}
 	
+	public void adicionaAmigo(String usuarioEmail) throws Exception{
+		controlador.adicionaAmigo(usuarioEmail);
+	}
+	
+	public void aceitaAmizade(String usuarioEmail) throws Exception{
+		controlador.aceitaAmizade(usuarioEmail);
+	}
+	
+	public void rejeitaAmizade(String usuarioEmail) throws Exception{
+		controlador.rejeitaAmizade(usuarioEmail);
+	}
+	
+	public void removeAmigo(String usuarioEmail) throws Exception{
+		controlador.removeAmigo(usuarioEmail);
+	}
+	
+	public String getNextNotificacao() throws Exception{
+		return controlador.getNextNotificacao();
+	}
+	
+	public int getQtdAmigos(){
+		return controlador.getQtdAmigos();
+	}
+	
+	public int getNotificacoes(){
+		return controlador.getNotificacoes();
+	}
+	
 	public Postagem getPost(int post){
 		return controlador.getPost(post);
 		
@@ -77,5 +106,6 @@ public class Facade {
 	
 	public String getConteudoPost(int indice, int post) throws Exception{
 		return controlador.getConteudoPost(indice, post);
+
 	}
 }

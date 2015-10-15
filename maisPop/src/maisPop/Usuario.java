@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.ArrayList;
 
 public class Usuario {
 
@@ -17,6 +18,8 @@ public class Usuario {
 	public static String HASHTAGS = "Hashtags";
 
 	private String nome, email, senha, dataDeNascimento, caminhoImagem;
+	private ArrayList<String> notificacoes;
+	private ArrayList<String> amigos;
 	private ArrayList<Postagem> mural;
 
 	private final String ERRO_DE_CADASTRO = "Erro no cadastro de Usuarios. ";
@@ -28,11 +31,42 @@ public class Usuario {
 		setSenha(senha);
 		setDataDeNascimento(dataDeNasc);
 		setCaminhoImagem(imagem);
+		amigos = new ArrayList<String>();
+		notificacoes = new ArrayList<String>();
 		this.mural = new ArrayList<Postagem>();
+
 	}
 
 	public String getCaminhoImagem() {
 		return caminhoImagem;
+	}
+	
+	public ArrayList<String> getAmigos(){
+		return amigos;
+	}
+
+	public ArrayList<String> getListaNotificacoes() {
+		return notificacoes;
+	}
+	
+	public int getNotificacoes(){
+		return notificacoes.size();
+	}
+	
+	public String getNextNotificacao() throws Exception{
+		for (String string : notificacoes) {
+			notificacoes.remove(string);
+			return string;
+		}
+		throw new Exception("Nao ha mais notificacoes");
+	}
+	
+	public int getQtdAmigos(){
+		int qtdAmigos = amigos.size();
+		if (qtdAmigos < 0) {
+			qtdAmigos = 0;
+		}
+		return qtdAmigos;
 	}
 
 	public String getDataDeNascimento() {
