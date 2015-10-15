@@ -59,6 +59,7 @@ public class Facade {
 	public void atualizaPerfil(String atributo, String valor) throws Exception{
 		controlador.atualizaPerfil(atributo, valor);
 	}
+	
 	public void atualizaPerfil(String atributo, String novaSenha, String velhaSenha) throws Exception{
 		controlador.atualizaPerfil(atributo, novaSenha, velhaSenha);
 	}
@@ -105,7 +106,6 @@ public class Facade {
 	
 	public String getConteudoPost(int indice, int post) throws Exception{
 		return controlador.getConteudoPost(indice, post);
-
 	}
 	
 	public void curtirPost(String usuarioEmail, int post) throws Exception{

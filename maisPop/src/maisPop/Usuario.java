@@ -4,7 +4,6 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.util.ArrayList;
 
 public class Usuario {
 
@@ -32,9 +31,9 @@ public class Usuario {
 		setSenha(senha);
 		setDataDeNascimento(dataDeNasc);
 		setCaminhoImagem(imagem);
-		amigos = new ArrayList<String>();
-		notificacoes = new ArrayList<String>();
-		notificacoesNaoLidas = new ArrayList<String>();
+		this.amigos = new ArrayList<String>();
+		this.notificacoes = new ArrayList<String>();
+		this.notificacoesNaoLidas = new ArrayList<String>();
 		this.mural = new ArrayList<Postagem>();
 
 	}
@@ -166,7 +165,6 @@ public class Usuario {
 
 	public String getPost(String atributo, int post) throws Exception {
 		Postagem p;
-		String saida = "";
 		try {
 			p = mural.get(post);
 		} catch (Exception e) {
