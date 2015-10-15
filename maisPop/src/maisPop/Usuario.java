@@ -26,6 +26,8 @@ public class Usuario {
 		setSenha(senha);
 		setDataDeNascimento(dataDeNasc);
 		setCaminhoImagem(imagem);
+		amigos = new ArrayList<String>();
+		notificacoes = new ArrayList<String>();
 	}
 
 	public String getCaminhoImagem() {
@@ -46,13 +48,18 @@ public class Usuario {
 	
 	public String getNextNotificacao() throws Exception{
 		for (String string : notificacoes) {
+			notificacoes.remove(string);
 			return string;
 		}
 		throw new Exception("Nao ha mais notificacoes");
 	}
 	
 	public int getQtdAmigos(){
-		return amigos.size();
+		int qtdAmigos = amigos.size();
+		if (qtdAmigos < 0) {
+			qtdAmigos = 0;
+		}
+		return qtdAmigos;
 	}
 
 	public String getDataDeNascimento() {

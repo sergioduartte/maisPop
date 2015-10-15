@@ -169,7 +169,7 @@ public class Controller {
 		if (!temUsuarioLogado){
 			throw new Exception("Nao eh possivel enviar solicitacao. Nenhum usuarix esta logadx no +pop.");
 		}
-		String mensagem = usuarioLogado.NOME + " quer sua amizade.";
+		String mensagem = usuarioLogado.getNome() + " quer sua amizade.";
 		adicionaNotificacao(usuarioEmail, mensagem);
 	}
 	
@@ -179,15 +179,15 @@ public class Controller {
 		}
 		usuarioLogado.getAmigos().add(usuarioEmail);
 		Usuario usr = retornaUsuarioPorEmail(usuarioEmail);
-		usr.getAmigos().add(usuarioLogado.EMAIL); 
-		adicionaNotificacao(usuarioEmail, usuarioLogado.NOME + " aceitou sua amizade.");
+		usr.getAmigos().add(usuarioLogado.getEmail()); 
+		adicionaNotificacao(usuarioEmail, usuarioLogado.getNome() + " aceitou sua amizade.");
 	}
 	
 	public void rejeitaAmizade(String usuarioEmail) throws Exception{
 		if (!temUsuarioLogado){
 			throw new Exception("Nao eh possivel adicionar amigo. Nenhum usuarix esta logadx no +pop.");
 		}
-		adicionaNotificacao(usuarioEmail, usuarioLogado.NOME + " rejeitou sua amizade.");
+		adicionaNotificacao(usuarioEmail, usuarioLogado.getNome() + " rejeitou sua amizade.");
 	}
 	
 	public void removeAmigo(String usuarioEmail) throws Exception{
@@ -195,7 +195,9 @@ public class Controller {
 			throw new Exception("Nao eh possivel adicionar amigo. Nenhum usuarix esta logadx no +pop.");
 		}
 		usuarioLogado.getAmigos().remove(usuarioEmail);
-		adicionaNotificacao(usuarioEmail, usuarioLogado.NOME + " removeu a sua amizade.");
+		Usuario usr = retornaUsuarioPorEmail(usuarioEmail);
+		usr.getAmigos().remove(usuarioLogado.getEmail());
+		adicionaNotificacao(usuarioEmail, usuarioLogado.getNome() + " removeu a sua amizade.");
 	}
 	
 	public String getNextNotificacao() throws Exception{
