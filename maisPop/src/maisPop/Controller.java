@@ -69,6 +69,7 @@ public class Controller {
 	}
 
 	public void iniciaSistema() {
+		//TODO Criar arquivos.
 	}
 
 	public Usuario loga(String email, String senha) throws Exception {
@@ -205,8 +206,8 @@ public class Controller {
 		if (!temSolicitacao(usr)) {
 			throw new Exception(usr.getNome() + " nao lhe enviou solicitacoes de amizade.");
 		}
-		usuarioLogado.getAmigos().add(usuarioEmail);
-		usr.getAmigos().add(usuarioLogado.getEmail());
+		usuarioLogado.addAmigo(usuarioEmail);
+		usr.addAmigo(usuarioLogado.getEmail());
 		adicionaNotificacao(usuarioEmail, usuarioLogado.getNome() + " aceitou sua amizade.");
 	}
 

@@ -89,6 +89,10 @@ public class Usuario {
 	public void setCaminhoImagem(String caminhoImagem) {
 		this.caminhoImagem = caminhoImagem;
 	}
+	
+	public void addAmigo(String usuarioEmail){
+		amigos.add(usuarioEmail);
+	}
 
 	public void setDataDeNascimento(String dataDeNascimento) throws Exception {
 		Pattern p = Pattern.compile("[\\d]{2}/[\\d]{2}/[\\d]{4}");
