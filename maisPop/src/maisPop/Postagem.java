@@ -1,15 +1,16 @@
 package maisPop;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Date;
 
 public class Postagem {
 
 	private int popularidade;
 	private String mensagem;
-	private Date data;
+	private LocalDateTime data;
 	private ArrayList<String> mensagemPura;
 	private ArrayList<String> hashtags;
 	private ArrayList<String> arquivos;
@@ -27,10 +28,25 @@ public class Postagem {
 		setPopularidade(0);
 		setData(data);
 	}
+	
 
-	private void setData(String data) throws ParseException {
-		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
-		this.data = sdf.parse(data);
+	private void setData(String data) {
+		String[] dataSplit = data.split(" ");
+		String[] dataTemp = dataSplit[0].split("/");
+		int dia = Integer.parseInt(dataTemp[0].trim());
+		int mes = Integer.parseInt(dataTemp[1].trim());
+		int ano = Integer.parseInt(dataTemp[2].trim());
+		
+		String[] dataTemp2 = dataSplit[1].split(":");
+		int hora = Integer.parseInt(dataTemp2[0].trim());
+		int minuto = Integer.parseInt(dataTemp2[1].trim());
+		int segundo = Integer.parseInt(dataTemp2[2].trim());
+		
+		LocalDate ldt = LocalDate.of(ano, mes, dia);
+		LocalTime lt = LocalTime.of(hora, minuto, segundo);
+		LocalDateTime saida = LocalDateTime.of(ldt,lt);
+				
+		this.data = saida;		
 	}
 
 	private void setPopularidade(int i) {
@@ -83,8 +99,8 @@ public class Postagem {
 	}
 
 	public String getData() {
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-		return sdf.format(data);
+		String saida = this.data.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+		return saida;
 	}
 
 	public String getMensagemPura() throws Exception {
