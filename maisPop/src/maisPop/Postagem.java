@@ -5,22 +5,24 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.List;
 
 public class Postagem {
 
 	private int popularidade;
 	private String mensagem;
 	private LocalDateTime data;
-	private ArrayList<String> hashtags;
-	private ArrayList<String> arquivos;
-	private ArrayList<String> conteudo;
+	private List<String> hashtags;
+	private List<String> arquivos;
+	private List<String> conteudo; //Conteudo vai ser uma heranca que implementa os tipos de conteudo, se eh
+										// string, audio,video e imagem.
 
 	private static String ERRO_DE_CRIACAO = "Nao eh possivel criar o post. ";
 
 	public Postagem(String mensagem, String data) throws Exception {
 		hashtags = new ArrayList<String>();
 		arquivos = new ArrayList<String>();
-		conteudo = new ArrayList<>();
+		conteudo = new ArrayList<String>();
 		setMensagem(mensagem);
 		validaMensagem();
 		setPopularidade(0);
@@ -38,7 +40,6 @@ public class Postagem {
 		int hora = Integer.parseInt(horaTemp[0].trim());
 		int minuto = Integer.parseInt(horaTemp[1].trim());
 		int segundo = Integer.parseInt(horaTemp[2].trim());
-
 		LocalDateTime saida = LocalDateTime.of(LocalDate.of(ano, mes, dia), LocalTime.of(hora, minuto, segundo));
 
 		this.data = saida;

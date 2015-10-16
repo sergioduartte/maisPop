@@ -4,6 +4,8 @@ import maisPop.Controller;
 import easyaccept.EasyAccept;
 
 public class Facade {
+	
+	private Controller controlador;
 
 	public static void main(String[] args) {
 		String[] files = new String[] { "maisPop.Facade", "testes/scripts_de_teste/usecase_1.txt",
@@ -13,7 +15,7 @@ public class Facade {
 		EasyAccept.main(files);
 	}
 
-	private Controller controlador;
+	
 
 	public Facade() {
 		controlador = new Controller();
