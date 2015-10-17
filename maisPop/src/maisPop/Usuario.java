@@ -17,6 +17,9 @@ public class Usuario {
 	public static String HASHTAGS = "Hashtags";
 
 	private String nome, email, senha, dataDeNascimento, caminhoImagem;
+	private ArrayList<String> notificacoes;
+	private ArrayList<String> solicitacoes;
+	private ArrayList<String> amigos;
 	private ArrayList<Postagem> mural;
 
 	private final String ERRO_DE_CADASTRO = "Erro no cadastro de Usuarios. ";
@@ -28,11 +31,43 @@ public class Usuario {
 		setSenha(senha);
 		setDataDeNascimento(dataDeNasc);
 		setCaminhoImagem(imagem);
+		this.amigos = new ArrayList<String>();
+		this.notificacoes = new ArrayList<String>();
+		this.solicitacoes = new ArrayList<String>();
 		this.mural = new ArrayList<Postagem>();
+
 	}
 
 	public String getCaminhoImagem() {
 		return caminhoImagem;
+	}
+	
+	public ArrayList<String> getAmigos(){
+		return amigos;
+	}
+
+	public ArrayList<String> getListaNotificacoes() {
+		return notificacoes;
+	}
+	
+	public ArrayList<String> getSolicitacoes() {
+		return solicitacoes;
+	}
+	
+	public int getNotificacoes(){
+		return notificacoes.size();
+	}
+	
+	public String getNextNotificacao() throws Exception{
+		for (String string : notificacoes) {
+			notificacoes.remove(string);
+			return string;
+		}
+		throw new Exception("Nao ha mais notificacoes.");
+	}
+	
+	public int getQtdAmigos(){
+		 return amigos.size();
 	}
 
 	public String getDataDeNascimento() {
@@ -53,6 +88,10 @@ public class Usuario {
 
 	public void setCaminhoImagem(String caminhoImagem) {
 		this.caminhoImagem = caminhoImagem;
+	}
+	
+	public void addAmigo(String usuarioEmail){
+		amigos.add(usuarioEmail);
 	}
 
 	public void setDataDeNascimento(String dataDeNascimento) throws Exception {
@@ -130,7 +169,6 @@ public class Usuario {
 
 	public String getPost(String atributo, int post) throws Exception {
 		Postagem p;
-		String saida = "";
 		try {
 			p = mural.get(post);
 		} catch (Exception e) {

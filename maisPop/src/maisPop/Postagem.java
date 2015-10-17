@@ -1,36 +1,48 @@
 package maisPop;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Date;
+import java.util.List;
 
 public class Postagem {
 
 	private int popularidade;
 	private String mensagem;
-	private Date data;
-	private ArrayList<String> mensagemPura;
-	private ArrayList<String> hashtags;
-	private ArrayList<String> arquivos;
-	private ArrayList<String> conteudo;
+	private LocalDateTime data;
+	private List<String> hashtags;
+	private List<String> arquivos;
+	private List<String> conteudo; //Conteudo vai ser uma heranca que implementa os tipos de conteudo, se eh
+										// string, audio,video e imagem.
 
 	private static String ERRO_DE_CRIACAO = "Nao eh possivel criar o post. ";
 
 	public Postagem(String mensagem, String data) throws Exception {
 		hashtags = new ArrayList<String>();
 		arquivos = new ArrayList<String>();
-		mensagemPura = new ArrayList<String>();
-		conteudo = new ArrayList<>();
+		conteudo = new ArrayList<String>();
 		setMensagem(mensagem);
 		validaMensagem();
 		setPopularidade(0);
 		setData(data);
 	}
 
-	private void setData(String data) throws ParseException {
-		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
-		this.data = sdf.parse(data);
+	private void setData(String data) {
+		String[] dataSplit = data.split(" ");
+		String[] dataTemp = dataSplit[0].split("/");
+		int dia = Integer.parseInt(dataTemp[0].trim());
+		int mes = Integer.parseInt(dataTemp[1].trim());
+		int ano = Integer.parseInt(dataTemp[2].trim());
+
+		String[] horaTemp = dataSplit[1].split(":");
+		int hora = Integer.parseInt(horaTemp[0].trim());
+		int minuto = Integer.parseInt(horaTemp[1].trim());
+		int segundo = Integer.parseInt(horaTemp[2].trim());
+		LocalDateTime saida = LocalDateTime.of(LocalDate.of(ano, mes, dia), LocalTime.of(hora, minuto, segundo));
+
+		this.data = saida;
 	}
 
 	private void setPopularidade(int i) {
@@ -39,7 +51,7 @@ public class Postagem {
 
 	private void setMensagem(String mensagem) throws Exception {
 		this.mensagem = mensagem;
-
+		StringBuilder mensagemPura = new StringBuilder();
 		String[] msg = mensagem.split(" ");
 		String padraoHashtag = "#\\w+";
 		String padraoAudio = "<audio>.*?</audio>";
@@ -48,21 +60,21 @@ public class Postagem {
 
 		for (int i = 0; i < msg.length; i++) {
 			if (msg[i].matches(padraoAudio)) {
-				conteudo.add("$arquivo_audio:" + msg[i].replaceAll("</?audio>", ""));
-				arquivos.add(msg[i].trim());
+				conteudo.add(msg[i].trim());
+				arquivos.add("$arquivo_audio:" + msg[i].replaceAll("</?audio>", ""));
 			} else if (msg[i].matches(padraoVideo)) {
-				conteudo.add("$arquivo_video:" + msg[i].replaceAll("</?video>", ""));
-				arquivos.add(msg[i].trim());
+				conteudo.add(msg[i].trim());
+				arquivos.add("$arquivo_video:" + msg[i].replaceAll("</?video>", ""));
 			} else if (msg[i].matches(padraoImagem)) {
-				conteudo.add("$arquivo_imagem:" + msg[i].replaceAll("</?imagem>", ""));
-				arquivos.add(msg[i]);
+				conteudo.add(msg[i]);
+				arquivos.add("$arquivo_imagem:" + msg[i].replaceAll("</?imagem>", ""));
 			} else if (msg[i].matches(padraoHashtag)) {
 				hashtags.add(msg[i]);
 			} else {
-				mensagemPura.add(msg[i].trim());
+				mensagemPura.append(msg[i] + " ");
 			}
 		}
-		conteudo.add(0, getMensagemPura());
+		conteudo.add(0, mensagemPura.toString().trim());
 	}
 
 	private void validaMensagem() throws Exception {
@@ -83,32 +95,18 @@ public class Postagem {
 	}
 
 	public String getData() {
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-		return sdf.format(data);
+		String saida = this.data.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+		return saida;
 	}
 
 	public String getMensagemPura() throws Exception {
-		StringBuilder saida = new StringBuilder();
-		for (int i = 0; i < mensagemPura.size(); i++) {
-			if (i == mensagemPura.size() - 1) {
-				saida.append(mensagemPura.get(i));
-			} else {
-				saida.append(mensagemPura.get(i) + " ");
-			}
-		}
-		return saida.toString();
+		return conteudo.get(0);
 	}
 
 	public String getMensagemSemHashtag() throws Exception {
 		StringBuilder saida = new StringBuilder();
-		String[] msg = mensagem.split("\\s");
-		for (int i = 0; i < msg.length; i++) {
-			if (!msg[i].matches("#\\w+")) {
-				saida.append(msg[i]);
-			}
-			if (i < msg.length - 1) {
-				saida.append(" ");
-			}
+		for (String item : conteudo) {
+			saida.append(item + " ");
 		}
 		return saida.toString().trim();
 	}
@@ -138,7 +136,11 @@ public class Postagem {
 
 	public String getConteudo(int indice) throws Exception {
 		try {
-			return conteudo.get(indice);
+			if (indice == 0) {
+				return conteudo.get(indice);
+			} else {
+				return arquivos.get(indice - 1);
+			}
 		} catch (Exception e) {
 			throw new Exception("Item #" + indice + " nao existe nesse post, ele possui apenas " + conteudo.size()
 					+ " itens distintos.");
