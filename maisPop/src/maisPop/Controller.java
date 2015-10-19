@@ -6,7 +6,6 @@ import java.util.List;
 public class Controller {
 
 	private List<Usuario> bancoDeUsuarios;
-	private boolean temUsuarioLogado;
 
 	private Usuario usuarioLogado;
 	
@@ -14,7 +13,6 @@ public class Controller {
 
 	public Controller() {
 		bancoDeUsuarios = new ArrayList<Usuario>();
-		temUsuarioLogado = false;
 	}
 
 	public String cadastraUsuario(String nome, String email, String senha, String dataDeNasc) throws Exception {
@@ -29,7 +27,7 @@ public class Controller {
 	}
 
 	public void fechaSistema() throws Exception {
-		if (temUsuarioLogado) {
+		if (usuarioLogado != null) {
 			throw new Exception("Nao foi possivel fechar o sistema. Um usuarix ainda esta logadx.");
 		}
 	}
@@ -87,9 +85,8 @@ public class Controller {
 	}
 
 	public void login(String email, String senha) throws Exception {
-		if (!temUsuarioLogado) {
+		if (usuarioLogado == null) {
 			this.usuarioLogado = loga(email, senha);
-			setUsuarioLogado(true);
 		} else {
 			throw new Exception(
 					"Nao foi possivel realizar login. Um usuarix ja esta logadx: " + usuarioLogado.getNome() + ".");
@@ -97,12 +94,10 @@ public class Controller {
 	}
 
 	public void logout() throws Exception {
-		if (temUsuarioLogado) {
-			setUsuarioLogado(false);
-		} else {
+		if (usuarioLogado == null) {
 			throw new Exception("Nao eh possivel realizar logout. Nenhum usuarix esta logadx no +pop.");
 		}
-		if (!usuarioLogado.equals(null)) {
+		if (usuarioLogado != null) {
 			usuarioLogado = null;
 		}
 
@@ -125,12 +120,8 @@ public class Controller {
 		throw new Exception("Um usuarix com email " + usuarioEmail + " nao esta cadastradx.");
 	}
 
-	public void setUsuarioLogado(boolean b) {
-		this.temUsuarioLogado = b;
-	}
-
 	public void atualizaPerfil(String atributo, String valor) throws Exception {
-		if (!temUsuarioLogado) {
+		if (usuarioLogado == null) {
 			throw new Exception("Nao eh possivel atualizar um perfil. Nenhum usuarix esta logadx no +pop.");
 		}
 		if (atributo.equals(Usuario.NOME)) {
@@ -145,7 +136,7 @@ public class Controller {
 	}
 
 	public void atualizaPerfil(String atributo, String novaSenha, String velhaSenha) throws Exception {
-		if (!temUsuarioLogado) {
+		if (usuarioLogado == null) {
 			throw new Exception("Nao eh possivel atualizar um perfil. Nenhum usuarix esta logadx no +pop.");
 		}
 		if (atributo.equals(Usuario.SENHA)) {
@@ -176,7 +167,7 @@ public class Controller {
 	}
 
 	public void curtirPost(String usuarioEmail, int post) throws Exception {
-		if (!temUsuarioLogado) {
+		if (usuarioLogado.equals(null)) {
 			throw new Exception("Nao eh possivel curtir o post. Nenhum usuarix esta logadx no +pop.");
 		}
 		Usuario usr = retornaUsuarioPorEmail(usuarioEmail);
@@ -196,7 +187,7 @@ public class Controller {
 	}
 
 	public void adicionaAmigo(String usuarioEmail) throws Exception {
-		if (!temUsuarioLogado) {
+		if (usuarioLogado == null) {
 			throw new Exception("Nao eh possivel enviar solicitacao. Nenhum usuarix esta logadx no +pop.");
 		}
 		String mensagem = usuarioLogado.getNome() + " quer sua amizade.";
@@ -205,7 +196,7 @@ public class Controller {
 	}
 
 	public void aceitaAmizade(String usuarioEmail) throws Exception {
-		if (!temUsuarioLogado) {
+		if (usuarioLogado == null) {
 			throw new Exception("Nao eh possivel aceitar solicitacao. Nenhum usuarix esta logadx no +pop.");
 		}
 		Usuario usr = retornaUsuarioPorEmail(usuarioEmail);
@@ -218,7 +209,7 @@ public class Controller {
 	}
 
 	public void rejeitaAmizade(String usuarioEmail) throws Exception {
-		if (!temUsuarioLogado) {
+		if (usuarioLogado == null) {
 			throw new Exception("Nao eh possivel rejeitar solicitacao. Nenhum usuarix esta logadx no +pop.");
 		}
 		Usuario usr = retornaUsuarioPorEmail(usuarioEmail);
@@ -229,7 +220,7 @@ public class Controller {
 	}
 
 	public void removeAmigo(String usuarioEmail) throws Exception {
-		if (!temUsuarioLogado) {
+		if (usuarioLogado == null) {
 			throw new Exception("Nao eh possivel adicionar amigo. Nenhum usuarix esta logadx no +pop.");
 		}
 		usuarioLogado.getAmigos().remove(usuarioEmail);
