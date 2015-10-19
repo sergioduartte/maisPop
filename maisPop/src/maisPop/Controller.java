@@ -167,7 +167,7 @@ public class Controller {
 	}
 
 	public void curtirPost(String usuarioEmail, int post) throws Exception {
-		if (usuarioLogado.equals(null)) {
+		if (usuarioLogado == null) {
 			throw new Exception("Nao eh possivel curtir o post. Nenhum usuarix esta logadx no +pop.");
 		}
 		Usuario usr = retornaUsuarioPorEmail(usuarioEmail);
