@@ -1,6 +1,5 @@
 package maisPop;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -30,7 +29,8 @@ public class Postagem {
 	}
 
 	private void setData(String data) {
-		DateTimeFormatter fEntrada = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
+		DateTimeFormatter fEntrada = DateTimeFormatter
+				.ofPattern("dd/MM/yyyy HH:mm:ss");
 		LocalDateTime dt = LocalDateTime.parse(data, fEntrada);
 		this.data = dt;
 	}
@@ -59,13 +59,16 @@ public class Postagem {
 		for (int i = 0; i < msg.length; i++) {
 			if (msg[i].matches(padraoAudio)) {
 				conteudo.add(msg[i].trim());
-				arquivos.add("$arquivo_audio:" + msg[i].replaceAll("</?audio>", ""));
+				arquivos.add("$arquivo_audio:"
+						+ msg[i].replaceAll("</?audio>", ""));
 			} else if (msg[i].matches(padraoVideo)) {
 				conteudo.add(msg[i].trim());
-				arquivos.add("$arquivo_video:" + msg[i].replaceAll("</?video>", ""));
+				arquivos.add("$arquivo_video:"
+						+ msg[i].replaceAll("</?video>", ""));
 			} else if (msg[i].matches(padraoImagem)) {
 				conteudo.add(msg[i]);
-				arquivos.add("$arquivo_imagem:" + msg[i].replaceAll("</?imagem>", ""));
+				arquivos.add("$arquivo_imagem:"
+						+ msg[i].replaceAll("</?imagem>", ""));
 			} else if (msg[i].matches(padraoHashtag)) {
 				hashtags.add(msg[i]);
 			} else {
@@ -78,14 +81,17 @@ public class Postagem {
 	private void validaMensagem() throws Exception {
 		String msg = getMensagemPura();
 		if (msg.length() >= 200) {
-			throw new Exception(ERRO_DE_CRIACAO + "O limite maximo da mensagem sao 200 caracteres.");
+			throw new Exception(ERRO_DE_CRIACAO
+					+ "O limite maximo da mensagem sao 200 caracteres.");
 		} else {
 			String[] msgTemp = this.mensagem.split(" ");
 			for (int i = 0; i < msgTemp.length - 1; i++) {
 				if (msgTemp[i].charAt(0) == '#') {
 					if (msgTemp[i + 1].charAt(0) != '#') {
-						throw new Exception(ERRO_DE_CRIACAO + "As hashtags devem comecar com '#'. Erro na hashtag: '"
-								+ msgTemp[i + 1] + "'.");
+						throw new Exception(
+								ERRO_DE_CRIACAO
+										+ "As hashtags devem comecar com '#'. Erro na hashtag: '"
+										+ msgTemp[i + 1] + "'.");
 					}
 				}
 			}
@@ -93,7 +99,8 @@ public class Postagem {
 	}
 
 	public String getData() {
-		String saida = this.data.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+		String saida = this.data.format(DateTimeFormatter
+				.ofPattern("yyyy-MM-dd HH:mm:ss"));
 		return saida;
 	}
 
@@ -140,8 +147,9 @@ public class Postagem {
 				return arquivos.get(indice - 1);
 			}
 		} catch (Exception e) {
-			throw new Exception("Item #" + indice + " nao existe nesse post, ele possui apenas " + conteudo.size()
-					+ " itens distintos.");
+			throw new Exception("Item #" + indice
+					+ " nao existe nesse post, ele possui apenas "
+					+ conteudo.size() + " itens distintos.");
 		}
 	}
 

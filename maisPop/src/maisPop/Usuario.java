@@ -21,7 +21,8 @@ public class Usuario implements Comparable<Usuario> {
 	private ArrayList<String> amigos;
 	private ArrayList<Postagem> mural;
 
-	public Usuario(String nome, String email, String senha, String dataDeNasc, String imagem) throws Exception {
+	public Usuario(String nome, String email, String senha, String dataDeNasc,
+			String imagem) throws Exception {
 		setNome(nome);
 		setEmail(email);
 		setSenha(senha);
@@ -132,7 +133,8 @@ public class Usuario implements Comparable<Usuario> {
 		try {
 			p = mural.get(post);
 		} catch (Exception e) {
-			throw new Exception("indice do post fora do range. Erro: " + e.getMessage());
+			throw new Exception("indice do post fora do range. Erro: "
+					+ e.getMessage());
 		}
 		if (atributo.equals(MENSAGEM)) {
 			return p.getMensagemSemHashtag();
@@ -147,7 +149,8 @@ public class Usuario implements Comparable<Usuario> {
 
 	public String getConteudoPost(int indice, int post) throws Exception {
 		if (indice < 0) {
-			throw new Exception("Requisicao invalida. O indice deve ser maior ou igual a zero.");
+			throw new Exception(
+					"Requisicao invalida. O indice deve ser maior ou igual a zero.");
 		}
 		Postagem p;
 		p = mural.get(post);
