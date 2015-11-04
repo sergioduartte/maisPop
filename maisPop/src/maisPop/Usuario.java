@@ -3,8 +3,7 @@ package maisPop;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
-public class Usuario implements Comparable<Usuario>{
-
+public class Usuario implements Comparable<Usuario> {
 	public static String NOME = "Nome";
 	public static String EMAIL = "E-mail";
 	public static String SENHA = "Senha";
@@ -34,6 +33,7 @@ public class Usuario implements Comparable<Usuario>{
 		this.mural = new ArrayList<Postagem>();
 		this.popularidade = new NormalPop();
 	}
+
 	public String getCaminhoImagem() {
 		return caminhoImagem;
 	}
@@ -106,7 +106,7 @@ public class Usuario implements Comparable<Usuario>{
 		this.senha = senha;
 	}
 
-	public LocalDate transformaData(String dataDeNascimento) {
+	public static LocalDate transformaData(String dataDeNascimento) {
 		String[] dataSplit = dataDeNascimento.split("/");
 		int dia = Integer.parseInt(dataSplit[0].trim());
 		int mes = Integer.parseInt(dataSplit[1].trim());
@@ -153,16 +153,16 @@ public class Usuario implements Comparable<Usuario>{
 		p = mural.get(post);
 		return p.getConteudo(indice);
 	}
-	
-	public Popularidade getPopularidade(){
+
+	public Popularidade getPopularidade() {
 		return this.popularidade;
 	}
-	
-	public int getPop(){
+
+	public int getPop() {
 		return this.pop;
 	}
-	
-	public void atualizaPop(){
+
+	public void atualizaPop() {
 		if (pop <= 500) {
 			popularidade = new NormalPop();
 		} else if (pop <= 1000) {
@@ -174,17 +174,13 @@ public class Usuario implements Comparable<Usuario>{
 
 	@Override
 	public int compareTo(Usuario usr) {
-		
-		if(this.getPop() > usr.getPop()){
+		if (this.getPop() > usr.getPop()) {
 			return 1;
-		} else if (this.getPop() < usr.getPop()){
+		} else if (this.getPop() < usr.getPop()) {
 			return -1;
-		} else if (this.getPop() == usr.getPop()){
-			return this.getEmail().compareTo(usr.getEmail());	
-			}		
+		} else if (this.getPop() == usr.getPop()) {
+			return this.getEmail().compareTo(usr.getEmail());
+		}
 		return 0;
-		}	
+	}
 }
-	
-	
-
