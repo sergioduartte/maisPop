@@ -2,10 +2,8 @@ package maisPop;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
-public class Usuario {
+public class Usuario implements Comparable<Usuario>{
 
 	public static String NOME = "Nome";
 	public static String EMAIL = "E-mail";
@@ -17,13 +15,12 @@ public class Usuario {
 	public static String HASHTAGS = "Hashtags";
 
 	private String nome, email, senha, dataDeNascimento, caminhoImagem;
+	private int pop;
+	private Popularidade popularidade;
 	private ArrayList<String> notificacoes;
 	private ArrayList<String> solicitacoes;
 	private ArrayList<String> amigos;
 	private ArrayList<Postagem> mural;
-
-	private final String ERRO_DE_CADASTRO = "Erro no cadastro de Usuarios. ";
-	private final String ERRO_DE_ATUALIZACAO = "Erro na atualizacao de perfil. ";
 
 	public Usuario(String nome, String email, String senha, String dataDeNasc, String imagem) throws Exception {
 		setNome(nome);
@@ -35,39 +32,38 @@ public class Usuario {
 		this.notificacoes = new ArrayList<String>();
 		this.solicitacoes = new ArrayList<String>();
 		this.mural = new ArrayList<Postagem>();
-
+		this.popularidade = new NormalPop();
 	}
-
 	public String getCaminhoImagem() {
 		return caminhoImagem;
 	}
-	
-	public ArrayList<String> getAmigos(){
+
+	public ArrayList<String> getAmigos() {
 		return amigos;
 	}
 
 	public ArrayList<String> getListaNotificacoes() {
 		return notificacoes;
 	}
-	
+
 	public ArrayList<String> getSolicitacoes() {
 		return solicitacoes;
 	}
-	
-	public int getNotificacoes(){
+
+	public int getNotificacoes() {
 		return notificacoes.size();
 	}
-	
-	public String getNextNotificacao() throws Exception{
+
+	public String getNextNotificacao() throws Exception {
 		for (String string : notificacoes) {
 			notificacoes.remove(string);
 			return string;
 		}
 		throw new Exception("Nao ha mais notificacoes.");
 	}
-	
-	public int getQtdAmigos(){
-		 return amigos.size();
+
+	public int getQtdAmigos() {
+		return amigos.size();
 	}
 
 	public String getDataDeNascimento() {
@@ -89,57 +85,21 @@ public class Usuario {
 	public void setCaminhoImagem(String caminhoImagem) {
 		this.caminhoImagem = caminhoImagem;
 	}
-	
-	public void addAmigo(String usuarioEmail){
+
+	public void addAmigo(String usuarioEmail) {
 		amigos.add(usuarioEmail);
 	}
 
-	public void setDataDeNascimento(String dataDeNascimento) throws Exception {
-		Pattern p = Pattern.compile("[\\d]{2}/[\\d]{2}/[\\d]{4}");
-		Matcher m = p.matcher(dataDeNascimento);
-
-		if (!m.matches() && this.dataDeNascimento == null) {
-			throw new Exception(ERRO_DE_CADASTRO + "Formato de data esta invalida.");
-
-		} else if (!m.matches() && this.dataDeNascimento != null) {
-			throw new Exception(ERRO_DE_ATUALIZACAO + "Formato de data esta invalida.");
-		} else {
-			try {
-				LocalDate data = transformaData(dataDeNascimento);
-			} catch (Exception e) {
-				if (this.dataDeNascimento != null) {
-					throw new Exception(ERRO_DE_ATUALIZACAO + "Data nao existe.");
-				} else {
-					throw new Exception(ERRO_DE_CADASTRO + "Data nao existe.");
-				}
-			}
-			this.dataDeNascimento = dataDeNascimento;
-		}
+	public void setDataDeNascimento(String dataDeNascimento) {
+		this.dataDeNascimento = dataDeNascimento;
 	}
 
-	public void setEmail(String email) throws Exception {
-		Pattern p = Pattern.compile("[\\w\\d_\\.%\\+-]+@[\\w\\d\\.-]+\\.[\\w]{2,6}");
-		Matcher m = p.matcher(email);
-
-		if (this.email != null && !m.matches()) {
-			throw new Exception(ERRO_DE_ATUALIZACAO + "Formato de e-mail esta invalido.");
-		}
-		if (m.matches()) {
-			this.email = email;
-		} else {
-			throw new Exception(ERRO_DE_CADASTRO + "Formato de e-mail esta invalido.");
-		}
+	public void setEmail(String email) {
+		this.email = email;
 	}
 
-	public void setNome(String nome) throws Exception {
-		if ((this.nome != null) && (nome.trim().length() == 0)) {
-			throw new Exception(ERRO_DE_ATUALIZACAO + "Nome dx usuarix nao pode ser vazio.");
-		}
-		if (nome.trim().length() > 0) {
-			this.nome = nome;
-		} else {
-			throw new Exception(ERRO_DE_CADASTRO + "Nome dx usuarix nao pode ser vazio.");
-		}
+	public void setNome(String nome) {
+		this.nome = nome;
 	}
 
 	public void setSenha(String senha) {
@@ -186,12 +146,45 @@ public class Usuario {
 	}
 
 	public String getConteudoPost(int indice, int post) throws Exception {
-		if (indice < 0){
+		if (indice < 0) {
 			throw new Exception("Requisicao invalida. O indice deve ser maior ou igual a zero.");
 		}
 		Postagem p;
 		p = mural.get(post);
 		return p.getConteudo(indice);
 	}
+	
+	public Popularidade getPopularidade(){
+		return this.popularidade;
+	}
+	
+	public int getPop(){
+		return this.pop;
+	}
+	
+	public void atualizaPop(){
+		if (pop <= 500) {
+			popularidade = new NormalPop();
+		} else if (pop <= 1000) {
+			popularidade = new CelebridadePop();
+		} else {
+			popularidade = new IconePop();
+		}
+	}
 
+	@Override
+	public int compareTo(Usuario usr) {
+		
+		if(this.getPop() > usr.getPop()){
+			return 1;
+		} else if (this.getPop() < usr.getPop()){
+			return -1;
+		} else if (this.getPop() == usr.getPop()){
+			return this.getEmail().compareTo(usr.getEmail());	
+			}		
+		return 0;
+		}	
 }
+	
+	
+
