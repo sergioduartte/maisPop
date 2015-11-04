@@ -1,15 +1,18 @@
 package maisPop;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 
 public class Controller {
 
-	private List<Usuario> bancoDeUsuarios;
+	private ArrayList<Usuario> bancoDeUsuarios;
 
 	private Usuario usuarioLogado;
-	
-	//TODO criar listaDeAmizades para nao ser preciso checar se us1 eh amigo de us2 em cada usuario.
+
+	// TODO criar listaDeAmizades para nao ser preciso checar se us1 eh amigo de
+	// us2 em cada usuario.
 
 	public Controller() {
 		bancoDeUsuarios = new ArrayList<Usuario>();
@@ -21,9 +24,34 @@ public class Controller {
 
 	public String cadastraUsuario(String nome, String email, String senha, String dataDeNasc, String imagem)
 			throws Exception {
-		Usuario usr = new Usuario(nome, email, senha, dataDeNasc, imagem);
+		Usuario usr = new Usuario(nome, email, senha, dataDeNasc, imagem); // UsuarioFactory.criaUsuario(nome,
+																			// email,
+																			// senha,
+																			// dataDeNasc,
+																			// imagem);
 		bancoDeUsuarios.add(usr);
 		return usr.getEmail();
+	}
+
+	
+	public List<Usuario> getMaisPopulares(){	
+		
+		return null;
+	}
+	
+	public List<Usuario> getMenosPopulares(){
+		List<Usuario> saida = new ArrayList<>();
+		Collections.sort(bancoDeUsuarios);
+		for (int i = 0; i < 3; i++) {
+			saida.add(i, bancoDeUsuarios.get(i));
+		}
+		return saida;
+	}
+	
+	
+	
+	public void iniciaSistema() {
+		// TODO Criar arquivos.
 	}
 
 	public void fechaSistema() throws Exception {
@@ -64,10 +92,6 @@ public class Controller {
 			saida = usr.getCaminhoImagem();
 		}
 		return saida;
-	}
-
-	public void iniciaSistema() {
-		//TODO Criar arquivos.
 	}
 
 	public Usuario loga(String email, String senha) throws Exception {
@@ -170,16 +194,35 @@ public class Controller {
 		if (usuarioLogado == null) {
 			throw new Exception("Nao eh possivel curtir o post. Nenhum usuarix esta logadx no +pop.");
 		}
+		
 		Usuario usr = retornaUsuarioPorEmail(usuarioEmail);
+		Postagem p = usr.getPost(post);
+		
 		adicionaNotificacao(usuarioEmail,
 				usuarioLogado.getNome() + " curtiu seu post de " + usr.getPost(Usuario.DATA_DA_POSTAGEM, post) + ".");
+		usuarioLogado.getPopularidade().curtirPost(p);
+		usr.atualizaPop();	
+	}
+
+	public void rejeitaPost(String usuarioEmail, int post) throws Exception {
+		if (usuarioLogado == null) {
+			throw new Exception("Nao eh possivel rejeitar o post. Nenhum usuarix esta logadx no +pop.");
+		}
+		
+		Usuario usr = retornaUsuarioPorEmail(usuarioEmail);
+		Postagem p = usr.getPost(post);
+		
+		adicionaNotificacao(usuarioEmail,
+				usuarioLogado.getNome() + " rejeitou seu post de " + usr.getPost(Usuario.DATA_DA_POSTAGEM, post) + ".");
+		usuarioLogado.getPopularidade().rejeitaPost(p);
+		usr.atualizaPop();
 	}
 
 	public void adicionaNotificacao(String usuarioEmail, String notificacao) throws Exception {
 		Usuario usr = retornaUsuarioPorEmail(usuarioEmail);
 		usr.getListaNotificacoes().add(notificacao);
 	}
-	
+
 	public void adicionaSolicitacao(String usuarioEmail, String solicitacao) throws Exception {
 		Usuario usr = retornaUsuarioPorEmail(usuarioEmail);
 		usr.getSolicitacoes().add(solicitacao);

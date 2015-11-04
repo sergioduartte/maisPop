@@ -1,5 +1,6 @@
 package maisPop;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -36,7 +37,15 @@ public class Postagem {
 	private void setPopularidade(int i) {
 		this.popularidade = i;
 	}
+	
+	public void addPopularidade(int i){
+		this.popularidade += i;
+	}
 
+	public void diminuiPopularidade(int i){
+		this.popularidade += i;
+	} 
+	
 	private void setMensagem(String mensagem) throws Exception {
 		this.mensagem = mensagem;
 		StringBuilder mensagemPura = new StringBuilder();
@@ -140,6 +149,22 @@ public class Postagem {
 		String saida = this.mensagem;
 		saida += " (" + getData() + ")";
 		return saida;
+	}
+
+	public boolean ehRecente() {
+		int dataPost = data.getDayOfYear();
+		int dataDeHoje = LocalDateTime.now().getDayOfYear();
+		if (dataDeHoje == dataPost) {
+			return true;
+		}
+		return false;
+	}
+
+
+	public void addHashTag(String hashtag) {
+		if (! hashtags.contains(hashtag)){
+			this.hashtags.add(hashtag);
+		}
 	}
 
 }
