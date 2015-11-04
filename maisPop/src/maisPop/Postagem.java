@@ -13,8 +13,9 @@ public class Postagem {
 	private LocalDateTime data;
 	private List<String> hashtags;
 	private List<String> arquivos;
-	private List<String> conteudo; //Conteudo vai ser uma heranca que implementa os tipos de conteudo, se eh
-										// string, audio,video e imagem.
+	private List<String> conteudo; // Conteudo vai ser uma heranca que
+									// implementa os tipos de conteudo, se eh
+									// string, audio,video e imagem.
 
 	private static String ERRO_DE_CRIACAO = "Nao eh possivel criar o post. ";
 
@@ -37,15 +38,15 @@ public class Postagem {
 	private void setPopularidade(int i) {
 		this.popularidade = i;
 	}
-	
-	public void addPopularidade(int i){
+
+	public void addPopularidade(int i) {
 		this.popularidade += i;
 	}
 
-	public void diminuiPopularidade(int i){
+	public void diminuiPopularidade(int i) {
 		this.popularidade += i;
-	} 
-	
+	}
+
 	private void setMensagem(String mensagem) throws Exception {
 		this.mensagem = mensagem;
 		StringBuilder mensagemPura = new StringBuilder();
@@ -160,9 +161,8 @@ public class Postagem {
 		return false;
 	}
 
-
 	public void addHashTag(String hashtag) {
-		if (! hashtags.contains(hashtag)){
+		if (!hashtags.contains(hashtag)) {
 			this.hashtags.add(hashtag);
 		}
 	}

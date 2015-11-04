@@ -1,21 +1,28 @@
 package maisPop;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class Controller {
 
 	private ArrayList<Usuario> bancoDeUsuarios;
 
 	private Usuario usuarioLogado;
+	private UsuarioFactory usuarioFactory;
+
+	private final String ERRO_DE_ATUALIZACAO = "Erro na atualizacao de perfil. ";
 
 	// TODO criar listaDeAmizades para nao ser preciso checar se us1 eh amigo de
 	// us2 em cada usuario.
 
 	public Controller() {
 		bancoDeUsuarios = new ArrayList<Usuario>();
+		usuarioFactory = new UsuarioFactory();
 	}
 
 	public String cadastraUsuario(String nome, String email, String senha, String dataDeNasc) throws Exception {
@@ -24,22 +31,16 @@ public class Controller {
 
 	public String cadastraUsuario(String nome, String email, String senha, String dataDeNasc, String imagem)
 			throws Exception {
-		Usuario usr = new Usuario(nome, email, senha, dataDeNasc, imagem); // UsuarioFactory.criaUsuario(nome,
-																			// email,
-																			// senha,
-																			// dataDeNasc,
-																			// imagem);
+		Usuario usr = usuarioFactory.criaUsuario(nome, email, senha, dataDeNasc, imagem);
 		bancoDeUsuarios.add(usr);
 		return usr.getEmail();
 	}
 
-	
-	public List<Usuario> getMaisPopulares(){	
-		
+	public List<Usuario> getMaisPopulares() {
 		return null;
 	}
-	
-	public List<Usuario> getMenosPopulares(){
+
+	public List<Usuario> getMenosPopulares() {
 		List<Usuario> saida = new ArrayList<>();
 		Collections.sort(bancoDeUsuarios);
 		for (int i = 0; i < 3; i++) {
@@ -47,9 +48,7 @@ public class Controller {
 		}
 		return saida;
 	}
-	
-	
-	
+
 	public void iniciaSistema() {
 		// TODO Criar arquivos.
 	}
@@ -149,10 +148,32 @@ public class Controller {
 			throw new Exception("Nao eh possivel atualizar um perfil. Nenhum usuarix esta logadx no +pop.");
 		}
 		if (atributo.equals(Usuario.NOME)) {
+			if ((valor != null) && (valor.trim().length() == 0)) {
+				throw new Exception(ERRO_DE_ATUALIZACAO + "Nome dx usuarix nao pode ser vazio.");
+			}
 			usuarioLogado.setNome(valor);
 		} else if (atributo.equals(Usuario.EMAIL)) {
+			Pattern p = Pattern.compile("[\\w\\d_\\.%\\+-]+@[\\w\\d\\.-]+\\.[\\w]{2,6}");
+			Matcher m = p.matcher(valor);
+			if (usuarioLogado.getEmail() != null && !m.matches()) {
+				throw new Exception(ERRO_DE_ATUALIZACAO + "Formato de e-mail esta invalido.");
+			}
 			usuarioLogado.setEmail(valor);
 		} else if (atributo.equals(Usuario.DATA_DE_NASCIMENTO)) {
+			Pattern p = Pattern.compile("[\\d]{2}/[\\d]{2}/[\\d]{4}");
+			Matcher m = p.matcher(valor);
+
+			if (!m.matches() && usuarioLogado.getDataDeNascimento() != null) {
+				throw new Exception(ERRO_DE_ATUALIZACAO + "Formato de data esta invalida.");
+			} else {
+				try {
+					LocalDate data = Usuario.transformaData(valor);
+				} catch (Exception e) {
+					if (usuarioLogado.getDataDeNascimento() != null) {
+						throw new Exception(ERRO_DE_ATUALIZACAO + "Data nao existe.");
+					}
+				}
+			}
 			usuarioLogado.setDataDeNascimento(valor);
 		} else if (atributo.equals(Usuario.FOTO)) {
 			usuarioLogado.setCaminhoImagem(valor);
@@ -167,7 +188,7 @@ public class Controller {
 			if (velhaSenha.equals(usuarioLogado.getSenha())) {
 				usuarioLogado.setSenha(novaSenha);
 			} else {
-				throw new Exception("Erro na atualizacao de perfil. A senha fornecida esta incorreta.");
+				throw new Exception(ERRO_DE_ATUALIZACAO + "A senha fornecida esta incorreta.");
 			}
 		}
 	}
@@ -194,24 +215,24 @@ public class Controller {
 		if (usuarioLogado == null) {
 			throw new Exception("Nao eh possivel curtir o post. Nenhum usuarix esta logadx no +pop.");
 		}
-		
+
 		Usuario usr = retornaUsuarioPorEmail(usuarioEmail);
 		Postagem p = usr.getPost(post);
-		
+
 		adicionaNotificacao(usuarioEmail,
 				usuarioLogado.getNome() + " curtiu seu post de " + usr.getPost(Usuario.DATA_DA_POSTAGEM, post) + ".");
 		usuarioLogado.getPopularidade().curtirPost(p);
-		usr.atualizaPop();	
+		usr.atualizaPop();
 	}
 
 	public void rejeitaPost(String usuarioEmail, int post) throws Exception {
 		if (usuarioLogado == null) {
 			throw new Exception("Nao eh possivel rejeitar o post. Nenhum usuarix esta logadx no +pop.");
 		}
-		
+
 		Usuario usr = retornaUsuarioPorEmail(usuarioEmail);
 		Postagem p = usr.getPost(post);
-		
+
 		adicionaNotificacao(usuarioEmail,
 				usuarioLogado.getNome() + " rejeitou seu post de " + usr.getPost(Usuario.DATA_DA_POSTAGEM, post) + ".");
 		usuarioLogado.getPopularidade().rejeitaPost(p);

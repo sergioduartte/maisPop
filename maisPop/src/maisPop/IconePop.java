@@ -1,12 +1,11 @@
 package maisPop;
 
-public class IconePop implements Popularidade{
-	
+public class IconePop implements Popularidade {
+
 	public final int VALOR_POP = 50;
 	public final String EPICWIN = "#epicwin";
 	public final String EPICFAIL = "#epicfail";
-	
-	
+
 	@Override
 	public void curtirPost(Postagem p) {
 		p.addHashTag(EPICWIN);
@@ -18,5 +17,5 @@ public class IconePop implements Popularidade{
 		p.addHashTag(EPICFAIL);
 		p.diminuiPopularidade(VALOR_POP);
 	}
-	
+
 }
