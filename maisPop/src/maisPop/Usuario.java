@@ -124,8 +124,15 @@ public class Usuario implements Comparable<Usuario> {
 		mural.add(post);
 	}
 
-	public Postagem getPost(int post) {
-		return mural.get(post);
+	public Postagem getPost(int post) throws Exception {
+		Postagem p;
+		try{
+			p = mural.get(post);
+		}catch(Exception e){
+			throw new Exception("Post #" + post + " nao existe. Usuarix possui apenas " + getQtdPost() + " post(s).");
+		}
+		return p;
+		
 	}
 
 	public String getPost(String atributo, int post) throws Exception {
@@ -157,12 +164,28 @@ public class Usuario implements Comparable<Usuario> {
 		return p.getConteudo(indice);
 	}
 
-	public Popularidade getPopularidade() {
-		return this.popularidade;
+	public String getPopularidade() {
+		return this.popularidade.toString();
+	}
+	
+	public void curtirPost(Postagem p){
+		this.popularidade.curtirPost(p);
+	}
+	
+	public void rejeitaPost(Postagem p){
+		this.popularidade.rejeitaPost(p);
 	}
 
 	public int getPop() {
 		return this.pop;
+	}
+	
+	public void adicionaPops(int i){
+		this.pop += i;
+	}
+	
+	public void diminuiPops(int i){
+		this.pop -= i;
 	}
 
 	public void atualizaPop() {
@@ -185,5 +208,9 @@ public class Usuario implements Comparable<Usuario> {
 			return this.getEmail().compareTo(usr.getEmail());
 		}
 		return 0;
+	}
+
+	public int getQtdPost() {
+		return mural.size();
 	}
 }

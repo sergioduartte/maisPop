@@ -12,7 +12,10 @@ public class Facade {
 				"testes/scripts_de_teste/usecase_1.txt",
 				"testes/scripts_de_teste/usecase_2.txt",
 				"testes/scripts_de_teste/usecase_3.txt",
-				"testes/scripts_de_teste/usecase_4.txt" };
+				"testes/scripts_de_teste/usecase_4.txt",
+				"testes/scripts_de_teste/usecase_5.txt",
+				"testes/scripts_de_teste/usecase_6.txt",
+				"testes/scripts_de_teste/usecase_7.txt"};
 		EasyAccept.main(files);
 	}
 
@@ -101,7 +104,7 @@ public class Facade {
 		return controlador.getNotificacoes();
 	}
 
-	public Postagem getPost(int post) {
+	public Postagem getPost(int post) throws Exception {
 		return controlador.getPost(post);
 	}
 
@@ -115,5 +118,37 @@ public class Facade {
 
 	public void curtirPost(String usuarioEmail, int post) throws Exception {
 		controlador.curtirPost(usuarioEmail, post);
+	}
+	
+	public void rejeitarPost(String usuarioEmail, int post) throws Exception{
+		controlador.rejeitaPost(usuarioEmail, post);
+	}
+	
+	public void adicionaPops(int i){
+		controlador.adicionaPops(i);
+	}
+	
+	public String getPopularidade(){
+		return controlador.getPopularidade();
+	}
+	
+	public int getPopsUsuario(){
+		return controlador.getPopsUsuario();
+	}
+	
+	public int getPopsUsuario(String usuarioEmail) throws Exception{
+		return controlador.getPopsUsuario(usuarioEmail);
+	}
+	
+	public int getPopsPost(int post) throws Exception{
+		return controlador.getPopsPost(post);
+	}
+	
+	public int qtdCurtidasDePost(int post) throws Exception{
+		return controlador.getCurtidasDePost(post);
+	}
+	
+	public int qtdRejeicoesDePost(int post) throws Exception{
+		return controlador.getRejeitadasDePost(post);
 	}
 }

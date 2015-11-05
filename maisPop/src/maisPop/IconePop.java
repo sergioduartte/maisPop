@@ -17,5 +17,10 @@ public class IconePop implements Popularidade {
 		p.addHashTag(EPICFAIL);
 		p.diminuiPopularidade(VALOR_POP);
 	}
+	
+	@Override
+	public String toString() {
+		return "Icone Pop";
+	}
 
 }

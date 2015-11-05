@@ -207,9 +207,9 @@ public class Controller {
 		usuarioLogado.adicionaNoMural(post);
 	}
 
-	public Postagem getPost(int post) {
-		return usuarioLogado.getPost(post);
-
+	public Postagem getPost(int post) throws Exception {
+		Postagem p = usuarioLogado.getPost(post);
+		return p;
 	}
 
 	public String getPost(String atributo, int post) throws Exception {
@@ -233,7 +233,7 @@ public class Controller {
 				usuarioEmail,
 				usuarioLogado.getNome() + " curtiu seu post de "
 						+ usr.getPost(Usuario.DATA_DA_POSTAGEM, post) + ".");
-		usuarioLogado.getPopularidade().curtirPost(p);
+		usuarioLogado.curtirPost(p);
 		usr.atualizaPop();
 	}
 
@@ -250,7 +250,7 @@ public class Controller {
 				usuarioEmail,
 				usuarioLogado.getNome() + " rejeitou seu post de "
 						+ usr.getPost(Usuario.DATA_DA_POSTAGEM, post) + ".");
-		usuarioLogado.getPopularidade().rejeitaPost(p);
+		usuarioLogado.rejeitaPost(p);
 		usr.atualizaPop();
 	}
 
@@ -340,6 +340,42 @@ public class Controller {
 			}
 		}
 		return false;
+	}
+	
+	public void adicionaPops(int i){
+		usuarioLogado.adicionaPops(i);
+	}
+	
+	public String getPopularidade(){
+		usuarioLogado.atualizaPop();
+		return usuarioLogado.getPopularidade();
+	}
+	
+	public int getPopsUsuario(){
+		return usuarioLogado.getPop();
+	}
+	
+	public int getPopsUsuario(String usuarioEmail) throws Exception{
+		if(usuarioLogado != null){
+			throw new Exception("Erro na consulta de Pops. Um usuarix ainda esta logadx.");
+		}
+		Usuario usr = retornaUsuarioPorEmail(usuarioEmail);
+		return usr.getPop();
+	}
+	
+	public int getPopsPost(int post) throws Exception{
+		Postagem p = usuarioLogado.getPost(post);
+		return p.getPopularidade();
+	}
+	
+	public int getCurtidasDePost(int post) throws Exception{
+		Postagem p = usuarioLogado.getPost(post);
+		return p.getCurtidas();
+	}
+	
+	public int getRejeitadasDePost(int post) throws Exception{
+		Postagem p = usuarioLogado.getPost(post);
+		return p.getRejeitadas();
 	}
 
 }

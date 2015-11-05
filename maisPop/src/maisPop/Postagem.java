@@ -8,6 +8,8 @@ import java.util.List;
 public class Postagem {
 
 	private int popularidade;
+	private int curtidas;
+	private int rejeitadas;
 	private String mensagem;
 	private LocalDateTime data;
 	private List<String> hashtags;
@@ -34,6 +36,18 @@ public class Postagem {
 		LocalDateTime dt = LocalDateTime.parse(data, fEntrada);
 		this.data = dt;
 	}
+	
+	public int getPopularidade(){
+		return this.popularidade;
+	}
+	
+	public int getCurtidas(){
+		return this.curtidas;
+	}
+	
+	public int getRejeitadas(){
+		return this.rejeitadas;
+	}
 
 	private void setPopularidade(int i) {
 		this.popularidade = i;
@@ -41,10 +55,12 @@ public class Postagem {
 
 	public void addPopularidade(int i) {
 		this.popularidade += i;
+		this.curtidas += 1;
 	}
 
 	public void diminuiPopularidade(int i) {
-		this.popularidade += i;
+		this.popularidade -= i;
+		this.rejeitadas += 1;
 	}
 
 	private void setMensagem(String mensagem) throws Exception {

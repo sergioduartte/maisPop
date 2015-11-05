@@ -22,5 +22,10 @@ public class CelebridadePop implements Popularidade {
 			p.diminuiPopularidade(VALOR_POP);
 		}
 	}
+	
+	@Override
+	public String toString() {
+		return "Celebridade Pop";
+	}
 
 }

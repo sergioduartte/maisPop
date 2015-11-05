@@ -13,5 +13,10 @@ public class NormalPop implements Popularidade {
 	public void rejeitaPost(Postagem p) {
 		p.diminuiPopularidade(VALOR_POP);
 	}
+	
+	@Override
+	public String toString() {
+		return "Normal Pop";
+	}
 
 }
