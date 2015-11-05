@@ -179,7 +179,7 @@ public class Usuario implements Comparable<Usuario> {
 	public int getPop() {
 		return this.pop;
 	}
-	
+
 	public void adicionaPops(int i){
 		this.pop += i;
 	}

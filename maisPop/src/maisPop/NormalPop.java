@@ -2,7 +2,7 @@ package maisPop;
 
 public class NormalPop implements Popularidade {
 
-	public final int VALOR_POP = 25;
+	public final int VALOR_POP = 10;
 
 	@Override
 	public void curtirPost(Postagem p) {

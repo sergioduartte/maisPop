@@ -188,6 +188,7 @@ public class Postagem {
 	public void addHashTag(String hashtag) {
 		if (!hashtags.contains(hashtag)) {
 			this.hashtags.add(hashtag);
+			this.mensagem.concat(" " + hashtag);
 		}
 	}
 
