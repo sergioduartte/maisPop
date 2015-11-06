@@ -109,7 +109,7 @@ public class Controller {
 		usuarioLogado.atualizaPop();
 		Usuario usr = retornaUsuarioPorEmail(usuarioEmail);
 		Postagem p = usr.getPost(post);
-		int curtida = usuarioLogado.getTipoPopularidade().getValorCurtida(p);
+		int curtida = usuarioLogado.getValorCurtida(p);
 		usuarioLogado.curtirPost(p);
 		usr.adicionaPops(curtida);
 
@@ -124,7 +124,7 @@ public class Controller {
 		usuarioLogado.atualizaPop();
 		Usuario usr = retornaUsuarioPorEmail(usuarioEmail);
 		Postagem p = usr.getPost(post);
-		int rejeita = usuarioLogado.getTipoPopularidade().getValorRejeita(p);
+		int rejeita = usuarioLogado.getValorRejeita(p);
 		usuarioLogado.rejeitaPost(p);
 		usr.diminuiPops(rejeita);
 
@@ -344,8 +344,6 @@ public class Controller {
 		}
 		return saida;
 	}
-
-
 
 	public String atualizaRanking() {
 		

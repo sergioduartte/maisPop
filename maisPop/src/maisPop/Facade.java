@@ -154,6 +154,5 @@ public class Facade {
 	
 	public String atualizaRanking(){
 		return controlador.atualizaRanking();
-		
 	}
 }

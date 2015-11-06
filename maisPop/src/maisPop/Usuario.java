@@ -215,7 +215,14 @@ public class Usuario implements Comparable<Usuario> {
 	public int getQtdPost() {
 		return mural.size();
 	}
-
+	
+	public int getValorCurtida(Postagem p){
+		return this.popularidade.getValorCurtida(p);
+	}
+	
+	public int getValorRejeita(Postagem p){
+		return this.popularidade.getValorRejeita(p);
+	}
 	
 	public Popularidade getTipoPopularidade() {
 		return this.popularidade;
