@@ -152,8 +152,8 @@ public class Facade {
 		return controlador.getRejeitadasDePost(post);
 	}
 	
-	public void atualizaRanking(){
-		controlador.atualizaRanking();
+	public String atualizaRanking(){
+		return controlador.atualizaRanking();
 		
 	}
 }

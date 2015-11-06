@@ -181,36 +181,6 @@ public class Controller {
 		return saida;
 	}
 
-	public List<Usuario> getMaisPopulares() {
-		List<Usuario> saida = new ArrayList<>();
-		Collections.sort(bancoDeUsuarios);
-		if (bancoDeUsuarios.size() < 3) {
-			for (int i = bancoDeUsuarios.size(); i > 0; i--) {
-				saida.add(bancoDeUsuarios.get(bancoDeUsuarios.size() - i));
-			}
-		} else {
-			for (int i = 3; i > 0; i--) {
-				saida.add(bancoDeUsuarios.get(bancoDeUsuarios.size() - i));
-			}
-		}
-		return saida;
-	}
-
-	public List<Usuario> getMenosPopulares() {
-		List<Usuario> saida = new ArrayList<>();
-		Collections.sort(bancoDeUsuarios);
-		if (bancoDeUsuarios.size() < 3) {
-			for (int i = 0; i < bancoDeUsuarios.size(); i--) {
-				saida.add(bancoDeUsuarios.get(i));
-			}
-		} else {
-			for (int i = 0; i < 3; i++) {
-				saida.add(bancoDeUsuarios.get(i));
-			}
-		}
-		return saida;
-	}
-
 	public String getNextNotificacao() throws Exception {
 		return usuarioLogado.getNextNotificacao();
 	}
@@ -344,10 +314,51 @@ public class Controller {
 		}
 		return false;
 	}
+	
+	public List<Usuario> getMaisPopulares() {
+		List<Usuario> saida = new ArrayList<>();
+		Collections.sort(bancoDeUsuarios);
+		if (bancoDeUsuarios.size() < 3) {
+			for (int i = bancoDeUsuarios.size(); i > 0; i--) {
+				saida.add(bancoDeUsuarios.get(bancoDeUsuarios.size() - i));
+			}
+		} else {
+			for (int i = 3; i > 0; i--) {
+				saida.add(bancoDeUsuarios.get(bancoDeUsuarios.size() - i));
+			}
+		}
+		return saida;
+	}
+
+	public List<Usuario> getMenosPopulares() {
+		List<Usuario> saida = new ArrayList<>();
+		Collections.sort(bancoDeUsuarios);
+		if (bancoDeUsuarios.size() < 3) {
+			for (int i = 0; i < bancoDeUsuarios.size(); i--) {
+				saida.add(bancoDeUsuarios.get(i));
+			}
+		} else {
+			for (int i = 0; i < 3; i++) {
+				saida.add(bancoDeUsuarios.get(i));
+			}
+		}
+		return saida;
+	}
 
 
-	public void atualizaRanking() {
 
+	public String atualizaRanking() {
+		
+		List<Usuario> maisPopulares = getMaisPopulares();
+		List<Usuario> menosPopulares = getMenosPopulares();
+
+		String saida = "Mais Populares: (1) " + maisPopulares.get(2)
+				+ "; (2) " + maisPopulares.get(1)
+				+ "; (3) " + maisPopulares.get(0) + "; | ";
+		saida += "Menos Populares: (1) " + menosPopulares.get(0)
+				+ "; (2) " + menosPopulares.get(1)
+				+ "; (3) " + menosPopulares.get(2) + ";";
+		return saida;
 	}
 
 }

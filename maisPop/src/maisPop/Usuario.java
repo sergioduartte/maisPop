@@ -220,5 +220,9 @@ public class Usuario implements Comparable<Usuario> {
 	public Popularidade getTipoPopularidade() {
 		return this.popularidade;
 	}
+	
+	public String toString(){
+		return this.nome + " " + this.pop;
+	}
 
 }
