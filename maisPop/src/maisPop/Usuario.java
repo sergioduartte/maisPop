@@ -164,6 +164,7 @@ public class Usuario implements Comparable<Usuario> {
 		return p.getConteudo(indice);
 	}
 
+<<<<<<< HEAD
 	public String getPopularidade() {
 		return this.popularidade.toString();
 	}
@@ -175,11 +176,17 @@ public class Usuario implements Comparable<Usuario> {
 	public void rejeitaPost(Postagem p){
 		this.popularidade.rejeitaPost(p);
 	}
+=======
+	public Popularidade getPopularidade() {
+		return this.popularidade;
+	}
+>>>>>>> 1d4838268ba371bdcb5e1c4a673103ceba5479be
 
 	public int getPop() {
 		return this.pop;
 	}
 
+<<<<<<< HEAD
 	public void adicionaPops(int i){
 		atualizaPop();
 		this.pop += i;
@@ -197,6 +204,15 @@ public class Usuario implements Comparable<Usuario> {
 			this.popularidade = new CelebridadePop();
 		} else if (this.pop > 1000){
 			this.popularidade = new IconePop();
+=======
+	public void atualizaPop() {
+		if (pop <= 500) {
+			popularidade = new NormalPop();
+		} else if (pop <= 1000) {
+			popularidade = new CelebridadePop();
+		} else {
+			popularidade = new IconePop();
+>>>>>>> 1d4838268ba371bdcb5e1c4a673103ceba5479be
 		}
 	}
 
@@ -211,6 +227,7 @@ public class Usuario implements Comparable<Usuario> {
 		}
 		return 0;
 	}
+<<<<<<< HEAD
 
 	public int getQtdPost() {
 		return mural.size();
@@ -221,4 +238,6 @@ public class Usuario implements Comparable<Usuario> {
 		return this.popularidade;
 	}
 
+=======
+>>>>>>> 1d4838268ba371bdcb5e1c4a673103ceba5479be
 }

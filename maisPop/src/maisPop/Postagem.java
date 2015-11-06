@@ -1,5 +1,6 @@
 package maisPop;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -63,6 +64,13 @@ public class Postagem {
 		this.rejeitadas += 1;
 	}
 
+<<<<<<< HEAD
+=======
+	public void diminuiPopularidade(int i) {
+		this.popularidade += i;
+	}
+
+>>>>>>> 1d4838268ba371bdcb5e1c4a673103ceba5479be
 	private void setMensagem(String mensagem) throws Exception {
 		this.mensagem = mensagem;
 		StringBuilder mensagemPura = new StringBuilder();
