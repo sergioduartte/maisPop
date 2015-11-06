@@ -121,10 +121,12 @@ public class Postagem {
 	}
 
 	public String getMensagemPura() throws Exception {
+		//TODO VERIFICAR PORQUE PODE SER LANCADO ERRO DAQUI
 		return conteudo.get(0);
 	}
 
 	public String getMensagemSemHashtag() throws Exception {
+		//TODO VERIFICAR PORQUE PODE SER LANCADO ERRO DAQUI
 		StringBuilder saida = new StringBuilder();
 		for (String item : conteudo) {
 			saida.append(item + " ");
@@ -132,6 +134,16 @@ public class Postagem {
 		return saida.toString().trim();
 	}
 
+	public String getMensagemCompleta() throws Exception{
+		//TODO VERIFICAR PORQUE PODE SER LANCADO ERRO DAQUI
+		StringBuilder saida = new StringBuilder();
+		saida.append(getMensagemSemHashtag());
+		for (String string : hashtags) {
+			saida.append(" " + string);
+		}
+		return saida.toString().trim();
+	}
+	
 	public String getHashtags() {
 		StringBuilder saida = new StringBuilder();
 		for (int i = 0; i < hashtags.size(); i++) {
@@ -171,9 +183,14 @@ public class Postagem {
 
 	@Override
 	public String toString() {
-		String saida = this.mensagem;
-		saida += " (" + getData() + ")";
-		return saida;
+		StringBuilder saida = new StringBuilder();
+		try {
+			saida.append(getMensagemCompleta());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		saida.append(" (" + getData() + ")");
+		return saida.toString().trim();
 	}
 
 	public boolean ehRecente() {

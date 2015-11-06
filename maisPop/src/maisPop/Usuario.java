@@ -181,20 +181,22 @@ public class Usuario implements Comparable<Usuario> {
 	}
 
 	public void adicionaPops(int i){
+		atualizaPop();
 		this.pop += i;
 	}
 	
 	public void diminuiPops(int i){
+		atualizaPop();
 		this.pop -= i;
 	}
 
 	public void atualizaPop() {
-		if (pop <= 500) {
-			popularidade = new NormalPop();
-		} else if (pop <= 1000) {
-			popularidade = new CelebridadePop();
-		} else {
-			popularidade = new IconePop();
+		if (this.pop <= 500) {
+			this.popularidade = new NormalPop();
+		} else if (this.pop <= 1000) {
+			this.popularidade = new CelebridadePop();
+		} else if (this.pop > 1000){
+			this.popularidade = new IconePop();
 		}
 	}
 

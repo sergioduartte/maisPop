@@ -151,4 +151,9 @@ public class Facade {
 	public int qtdRejeicoesDePost(int post) throws Exception{
 		return controlador.getRejeitadasDePost(post);
 	}
+	
+	public void atualizaRanking(){
+		controlador.atualizaRanking();
+		
+	}
 }

@@ -106,36 +106,33 @@ public class Controller {
 		if (usuarioLogado == null) {
 			throw new Exception("Nao eh possivel curtir o post. Nenhum usuarix esta logadx no +pop.");
 		}
-		
+		usuarioLogado.atualizaPop();
 		Usuario usr = retornaUsuarioPorEmail(usuarioEmail);
 		Postagem p = usr.getPost(post);
 		int curtida = usuarioLogado.getTipoPopularidade().getValorCurtida(p);
 		usuarioLogado.curtirPost(p);
 		usr.adicionaPops(curtida);
-		usr.atualizaPop();
-		
+
 		adicionaNotificacao(usuarioEmail,
 				usuarioLogado.getNome() + " curtiu seu post de " + usr.getPost(Usuario.DATA_DA_POSTAGEM, post) + ".");
-
 	}
-	
+
 	public void rejeitaPost(String usuarioEmail, int post) throws Exception {
 		if (usuarioLogado == null) {
 			throw new Exception("Nao eh possivel rejeitar o post. Nenhum usuarix esta logadx no +pop.");
 		}
-
+		usuarioLogado.atualizaPop();
 		Usuario usr = retornaUsuarioPorEmail(usuarioEmail);
 		Postagem p = usr.getPost(post);
 		int rejeita = usuarioLogado.getTipoPopularidade().getValorRejeita(p);
 		usuarioLogado.rejeitaPost(p);
 		usr.diminuiPops(rejeita);
-		usr.atualizaPop();
-		
+
 		adicionaNotificacao(usuarioEmail,
 				usuarioLogado.getNome() + " rejeitou seu post de " + usr.getPost(Usuario.DATA_DA_POSTAGEM, post) + ".");
 	}
 
-	public  void fechaSistema() throws Exception {
+	public void fechaSistema() throws Exception {
 		if (usuarioLogado != null) {
 			throw new Exception("Nao foi possivel fechar o sistema. Um usuarix ainda esta logadx.");
 		}
@@ -336,7 +333,7 @@ public class Controller {
 		}
 		throw new Exception("Um usuarix com email " + usuarioEmail + " nao esta cadastradx.");
 	}
-	
+
 	public boolean temSolicitacao(Usuario usr) {
 		String mensagem = usr.getNome() + " quer sua amizade.";
 		for (String solicitacao : usuarioLogado.getSolicitacoes()) {
@@ -346,6 +343,11 @@ public class Controller {
 			}
 		}
 		return false;
+	}
+
+
+	public void atualizaRanking() {
+
 	}
 
 }
