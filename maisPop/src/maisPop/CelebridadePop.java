@@ -4,23 +4,24 @@ public class CelebridadePop implements Popularidade {
 
 	public final int VALOR_POP = 25;
 	public final int VALOR_ADICIONAL = 10;
+	
+	@Override
+	public int getValorCurtida(Postagem p) {
+		if (p.ehRecente()) {
+			return VALOR_POP + VALOR_ADICIONAL;
+		} else {
+			return VALOR_POP;
+		}
+	}	
 
 	@Override
 	public void curtirPost(Postagem p) {
-		if (p.ehRecente()) {
-			p.addPopularidade(VALOR_POP + VALOR_ADICIONAL);
-		} else {
-			p.addPopularidade(VALOR_POP);
-		}
+		p.addPopularidade(getValorCurtida(p));
 	}
 
 	@Override
 	public void rejeitaPost(Postagem p) {
-		if (p.ehRecente()) {
-			p.diminuiPopularidade(VALOR_POP + VALOR_ADICIONAL);
-		} else {
-			p.diminuiPopularidade(VALOR_POP);
-		}
+		p.diminuiPopularidade(getValorCurtida(p));
 	}
 	
 	@Override
@@ -28,4 +29,12 @@ public class CelebridadePop implements Popularidade {
 		return "Celebridade Pop";
 	}
 
+	@Override
+	public int getValorRejeita(Postagem p) {
+		if (p.ehRecente()) {
+			return VALOR_POP + VALOR_ADICIONAL;
+		} else {
+			return VALOR_POP;
+		}
+	}	
 }

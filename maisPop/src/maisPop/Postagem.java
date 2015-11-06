@@ -179,6 +179,7 @@ public class Postagem {
 	public boolean ehRecente() {
 		int dataPost = data.getDayOfYear();
 		int dataDeHoje = LocalDateTime.now().getDayOfYear();
+
 		if (dataDeHoje == dataPost) {
 			return true;
 		}

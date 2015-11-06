@@ -9,18 +9,28 @@ public class IconePop implements Popularidade {
 	@Override
 	public void curtirPost(Postagem p) {
 		p.addHashTag(EPICWIN);
-		p.addPopularidade(VALOR_POP);
+		p.addPopularidade(getValorCurtida(p));
 	}
 
 	@Override
 	public void rejeitaPost(Postagem p) {
 		p.addHashTag(EPICFAIL);
-		p.diminuiPopularidade(VALOR_POP);
+		p.diminuiPopularidade(getValorRejeita(p));
 	}
 	
 	@Override
 	public String toString() {
 		return "Icone Pop";
+	}
+
+	@Override
+	public int getValorCurtida(Postagem p) {
+		return VALOR_POP;
+	}
+
+	@Override
+	public int getValorRejeita(Postagem p) {
+		return VALOR_POP;
 	}
 
 }

@@ -13,9 +13,6 @@ public class Controller {
 
 	private final String ERRO_DE_ATUALIZACAO = "Erro na atualizacao de perfil. ";
 
-	// TODO criar listaDeAmizades para nao ser preciso checar se us1 eh amigo de
-	// us2 em cada usuario.
-
 	public Controller() {
 		bancoDeUsuarios = new ArrayList<Usuario>();
 		usuarioFactory = new UsuarioFactory();
@@ -109,19 +106,33 @@ public class Controller {
 		if (usuarioLogado == null) {
 			throw new Exception("Nao eh possivel curtir o post. Nenhum usuarix esta logadx no +pop.");
 		}
-
+		
 		Usuario usr = retornaUsuarioPorEmail(usuarioEmail);
 		Postagem p = usr.getPost(post);
-		int popPost = p.getPopularidade();
-		
-		usr.diminuiPops(popPost);
+		int curtida = usuarioLogado.getTipoPopularidade().getValorCurtida(p);
 		usuarioLogado.curtirPost(p);
-		usr.adicionaPops(popPost);
+		usr.adicionaPops(curtida);
+		usr.atualizaPop();
 		
 		adicionaNotificacao(usuarioEmail,
 				usuarioLogado.getNome() + " curtiu seu post de " + usr.getPost(Usuario.DATA_DA_POSTAGEM, post) + ".");
+
+	}
+	
+	public void rejeitaPost(String usuarioEmail, int post) throws Exception {
+		if (usuarioLogado == null) {
+			throw new Exception("Nao eh possivel rejeitar o post. Nenhum usuarix esta logadx no +pop.");
+		}
+
+		Usuario usr = retornaUsuarioPorEmail(usuarioEmail);
+		Postagem p = usr.getPost(post);
+		int rejeita = usuarioLogado.getTipoPopularidade().getValorRejeita(p);
+		usuarioLogado.rejeitaPost(p);
+		usr.diminuiPops(rejeita);
 		usr.atualizaPop();
-		usr.adicionaPops(p.getPopularidade());
+		
+		adicionaNotificacao(usuarioEmail,
+				usuarioLogado.getNome() + " rejeitou seu post de " + usr.getPost(Usuario.DATA_DA_POSTAGEM, post) + ".");
 	}
 
 	public  void fechaSistema() throws Exception {
@@ -297,20 +308,6 @@ public class Controller {
 			throw new Exception(usr.getNome() + " nao lhe enviou solicitacoes de amizade.");
 		}
 		adicionaNotificacao(usuarioEmail, usuarioLogado.getNome() + " rejeitou sua amizade.");
-	}
-
-	public void rejeitaPost(String usuarioEmail, int post) throws Exception {
-		if (usuarioLogado == null) {
-			throw new Exception("Nao eh possivel rejeitar o post. Nenhum usuarix esta logadx no +pop.");
-		}
-
-		Usuario usr = retornaUsuarioPorEmail(usuarioEmail);
-		Postagem p = usr.getPost(post);
-
-		adicionaNotificacao(usuarioEmail,
-				usuarioLogado.getNome() + " rejeitou seu post de " + usr.getPost(Usuario.DATA_DA_POSTAGEM, post) + ".");
-		usuarioLogado.rejeitaPost(p);
-		usr.atualizaPop();
 	}
 
 	public void removeAmigo(String usuarioEmail) throws Exception {

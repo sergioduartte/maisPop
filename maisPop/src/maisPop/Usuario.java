@@ -213,4 +213,10 @@ public class Usuario implements Comparable<Usuario> {
 	public int getQtdPost() {
 		return mural.size();
 	}
+
+	
+	public Popularidade getTipoPopularidade() {
+		return this.popularidade;
+	}
+
 }
