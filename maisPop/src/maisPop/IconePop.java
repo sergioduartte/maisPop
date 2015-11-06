@@ -17,7 +17,6 @@ public class IconePop implements Popularidade {
 		p.addHashTag(EPICFAIL);
 		p.diminuiPopularidade(getValorRejeita(p));
 	}
-<<<<<<< HEAD
 	
 	@Override
 	public String toString() {
@@ -33,7 +32,5 @@ public class IconePop implements Popularidade {
 	public int getValorRejeita(Postagem p) {
 		return VALOR_POP;
 	}
-=======
->>>>>>> 1d4838268ba371bdcb5e1c4a673103ceba5479be
 
 }
