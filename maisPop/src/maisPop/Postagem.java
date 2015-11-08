@@ -146,13 +146,20 @@ public class Postagem {
 	
 	public String getHashtags() {
 		StringBuilder saida = new StringBuilder();
-		for (int i = 0; i < hashtags.size(); i++) {
+		saida.append("");
+		if (hashtags.size() > 0){
+			for (int i = 0; i < hashtags.size(); i++) {
 			saida.append(hashtags.get(i));
-			if (i != hashtags.size() - 1) {
-				saida.append(",");
+				if (i != hashtags.size() - 1) {
+					saida.append(",");
+				}	
 			}
-		}
+		}	
 		return saida.toString();
+	}
+	
+	public List<String> getListaHashtags(){
+		return this.hashtags;
 	}
 
 	public String getArquivosDaMensagem() {

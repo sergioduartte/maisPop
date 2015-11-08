@@ -155,4 +155,8 @@ public class Facade {
 	public String atualizaRanking(){
 		return controlador.atualizaRanking();
 	}
+	
+	public String atualizaTrendingTopics(){
+		return controlador.atualizaTrendingTopics();		
+	}
 }

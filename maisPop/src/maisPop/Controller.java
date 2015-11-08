@@ -10,12 +10,14 @@ public class Controller {
 
 	private Usuario usuarioLogado;
 	private UsuarioFactory usuarioFactory;
-
+	private TrendingTopics trendingTopics;
+	
 	private final String ERRO_DE_ATUALIZACAO = "Erro na atualizacao de perfil. ";
 
 	public Controller() {
 		bancoDeUsuarios = new ArrayList<Usuario>();
 		usuarioFactory = new UsuarioFactory();
+		trendingTopics = new TrendingTopics();
 	}
 
 	public void aceitaAmizade(String usuarioEmail) throws Exception {
@@ -100,6 +102,16 @@ public class Controller {
 	public void criaPost(String mensagem, String data) throws Exception {
 		Postagem post = usuarioLogado.criaPost(mensagem, data);
 		usuarioLogado.adicionaNoMural(post);
+	}
+	
+	private void insereHashtagsNoTT(List<String> listaDeHashtags) {
+		for (String hashtag : listaDeHashtags) {
+			if (trendingTopics.hasHashtag(hashtag)) {
+				trendingTopics.getHashtag(hashtag).addQuantidade();
+			} else {
+				trendingTopics.add(new Tupla(hashtag,1));;
+			}
+		}
 	}
 
 	public void curtirPost(String usuarioEmail, int post) throws Exception {
@@ -357,6 +369,24 @@ public class Controller {
 				+ "; (2) " + menosPopulares.get(1)
 				+ "; (3) " + menosPopulares.get(2) + ";";
 		return saida;
+	}
+
+	public String atualizaTrendingTopics() {
+		if (trendingTopics.size() == 0) {
+			for (Usuario usuario : bancoDeUsuarios) {
+				for (Postagem p : usuario.getMural()) {
+					insereHashtagsNoTT(p.getListaHashtags());
+				}
+			}
+		} else {
+			this.trendingTopics = new TrendingTopics();
+			for (Usuario usuario : bancoDeUsuarios) {
+				for (Postagem p : usuario.getMural()) {
+					insereHashtagsNoTT(p.getListaHashtags());
+				}
+			}	
+		}
+		return this.trendingTopics.toString();
 	}
 
 }

@@ -82,6 +82,10 @@ public class Usuario implements Comparable<Usuario> {
 	public String getSenha() {
 		return senha;
 	}
+	
+	public ArrayList<Postagem> getMural(){
+		return this.mural;
+	}
 
 	public void setCaminhoImagem(String caminhoImagem) {
 		this.caminhoImagem = caminhoImagem;
