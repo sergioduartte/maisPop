@@ -1,4 +1,4 @@
-package maisPop1;
+package maisPop;
 
 import easyaccept.EasyAccept;
 
@@ -8,7 +8,7 @@ public class Facade {
 	private Serializador serializador;
 
 	public static void main(String[] args) {
-		String[] files = new String[] { "maisPop1.Facade", "testes/scripts_de_teste/usecase_1.txt",
+		String[] files = new String[] { "maisPop.Facade", "testes/scripts_de_teste/usecase_1.txt",
 				"testes/scripts_de_teste/usecase_2.txt", "testes/scripts_de_teste/usecase_3.txt",
 				"testes/scripts_de_teste/usecase_4.txt", "testes/scripts_de_teste/usecase_5.txt",
 				"testes/scripts_de_teste/usecase_6.txt", "testes/scripts_de_teste/usecase_7.txt",
@@ -18,8 +18,8 @@ public class Facade {
 	}
 
 	public Facade() {
-		controlador = new Controller();
 		serializador = new Serializador();
+		iniciaSistema();
 	}
 
 	public String cadastraUsuario(String nome, String email, String senha, String dataDeNasc) throws Exception {
@@ -34,17 +34,20 @@ public class Facade {
 	public void fechaSistema() throws Exception {
 		serializador.fechaSistema(controlador);
 	}
-
+	
+	public void iniciaSistema() {
+		controlador = serializador.iniciaSistema();
+		if (controlador == null) {
+			controlador = new Controller();
+		}
+	}
+	
 	public String getInfoUsuario(String atributo) throws Exception {
 		return controlador.getInfoUsuario(atributo);
 	}
 
 	public String getInfoUsuario(String atributo, String email) throws Exception {
 		return controlador.getInfoUsuario(atributo, email);
-	}
-
-	public void iniciaSistema() {
-		controlador = serializador.iniciaSistema(controlador);
 	}
 
 	public void login(String email, String senha) throws Exception {

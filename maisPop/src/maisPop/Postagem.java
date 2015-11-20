@@ -1,4 +1,4 @@
-package maisPop1;
+package maisPop;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
