@@ -1,4 +1,6 @@
-package maisPop;
+package maisPop1;
+
+import java.util.List;
 
 public interface Popularidade {
 
@@ -10,4 +12,5 @@ public interface Popularidade {
 
 	public int getValorRejeita(Postagem p);
 
+	public List<Postagem> fornecePosts(List<Postagem> mural);
 }

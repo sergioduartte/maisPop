@@ -1,10 +1,11 @@
-package maisPop;
+package maisPop1;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class UsuarioFactory {
+public class UsuarioFactory  implements Serializable {
 
 	private final String ERRO_DE_CADASTRO = "Erro no cadastro de Usuarios. ";
 

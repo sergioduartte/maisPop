@@ -1,7 +1,13 @@
-package maisPop;
+package maisPop1;
 
-public class IconePop implements Popularidade {
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
+public class IconePop implements Popularidade, Serializable{
+
+	private static final long serialVersionUID = 1L;
+	private static final int NUMERO_POSTS = 6;
 	public final int VALOR_POP = 50;
 	public final String EPICWIN = "#epicwin";
 	public final String EPICFAIL = "#epicfail";
@@ -31,6 +37,14 @@ public class IconePop implements Popularidade {
 	@Override
 	public int getValorRejeita(Postagem p) {
 		return VALOR_POP;
+	}
+	
+	public List<Postagem> fornecePosts(List<Postagem> mural) {
+		List<Postagem> postagens = new ArrayList<Postagem>();
+		for (int i = 0; i < NUMERO_POSTS; i++) {
+			postagens.add(mural.get(i));
+		}
+		return postagens;
 	}
 
 }

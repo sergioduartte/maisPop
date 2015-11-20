@@ -1,12 +1,14 @@
-package maisPop;
+package maisPop1;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Postagem {
+public class Postagem implements Serializable, Comparable<Postagem>{
 
+	private static final long serialVersionUID = 1L;
 	private int popularidade;
 	private int curtidas;
 	private int rejeitadas;
@@ -14,9 +16,7 @@ public class Postagem {
 	private LocalDateTime data;
 	private List<String> hashtags;
 	private List<String> arquivos;
-	private List<String> conteudo; // Conteudo vai ser uma heranca que
-									// implementa os tipos de conteudo, se eh
-									// string, audio,video e imagem.
+	private List<String> conteudo;
 
 	private static String ERRO_DE_CRIACAO = "Nao eh possivel criar o post. ";
 
@@ -31,21 +31,20 @@ public class Postagem {
 	}
 
 	private void setData(String data) {
-		DateTimeFormatter fEntrada = DateTimeFormatter
-				.ofPattern("dd/MM/yyyy HH:mm:ss");
+		DateTimeFormatter fEntrada = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
 		LocalDateTime dt = LocalDateTime.parse(data, fEntrada);
 		this.data = dt;
 	}
-	
-	public int getPopularidade(){
+
+	public int getPopularidade() {
 		return this.popularidade;
 	}
-	
-	public int getCurtidas(){
+
+	public int getCurtidas() {
 		return this.curtidas;
 	}
-	
-	public int getRejeitadas(){
+
+	public int getRejeitadas() {
 		return this.rejeitadas;
 	}
 
@@ -75,16 +74,13 @@ public class Postagem {
 		for (int i = 0; i < msg.length; i++) {
 			if (msg[i].matches(padraoAudio)) {
 				conteudo.add(msg[i].trim());
-				arquivos.add("$arquivo_audio:"
-						+ msg[i].replaceAll("</?audio>", ""));
+				arquivos.add("$arquivo_audio:" + msg[i].replaceAll("</?audio>", ""));
 			} else if (msg[i].matches(padraoVideo)) {
 				conteudo.add(msg[i].trim());
-				arquivos.add("$arquivo_video:"
-						+ msg[i].replaceAll("</?video>", ""));
+				arquivos.add("$arquivo_video:" + msg[i].replaceAll("</?video>", ""));
 			} else if (msg[i].matches(padraoImagem)) {
 				conteudo.add(msg[i]);
-				arquivos.add("$arquivo_imagem:"
-						+ msg[i].replaceAll("</?imagem>", ""));
+				arquivos.add("$arquivo_imagem:" + msg[i].replaceAll("</?imagem>", ""));
 			} else if (msg[i].matches(padraoHashtag)) {
 				hashtags.add(msg[i]);
 			} else {
@@ -97,17 +93,14 @@ public class Postagem {
 	private void validaMensagem() throws Exception {
 		String msg = getMensagemPura();
 		if (msg.length() >= 200) {
-			throw new Exception(ERRO_DE_CRIACAO
-					+ "O limite maximo da mensagem sao 200 caracteres.");
+			throw new Exception(ERRO_DE_CRIACAO + "O limite maximo da mensagem sao 200 caracteres.");
 		} else {
 			String[] msgTemp = this.mensagem.split(" ");
 			for (int i = 0; i < msgTemp.length - 1; i++) {
 				if (msgTemp[i].charAt(0) == '#') {
 					if (msgTemp[i + 1].charAt(0) != '#') {
-						throw new Exception(
-								ERRO_DE_CRIACAO
-										+ "As hashtags devem comecar com '#'. Erro na hashtag: '"
-										+ msgTemp[i + 1] + "'.");
+						throw new Exception(ERRO_DE_CRIACAO + "As hashtags devem comecar com '#'. Erro na hashtag: '"
+								+ msgTemp[i + 1] + "'.");
 					}
 				}
 			}
@@ -115,18 +108,19 @@ public class Postagem {
 	}
 
 	public String getData() {
-		String saida = this.data.format(DateTimeFormatter
-				.ofPattern("yyyy-MM-dd HH:mm:ss"));
+		String saida = this.data.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
 		return saida;
 	}
+	
+	public LocalDateTime getDateTime(){
+		return data;
+	}
 
-	public String getMensagemPura() throws Exception {
-		//TODO VERIFICAR PORQUE PODE SER LANCADO ERRO DAQUI
+	public String getMensagemPura() {
 		return conteudo.get(0);
 	}
 
-	public String getMensagemSemHashtag() throws Exception {
-		//TODO VERIFICAR PORQUE PODE SER LANCADO ERRO DAQUI
+	public String getMensagemSemHashtag() {
 		StringBuilder saida = new StringBuilder();
 		for (String item : conteudo) {
 			saida.append(item + " ");
@@ -134,8 +128,7 @@ public class Postagem {
 		return saida.toString().trim();
 	}
 
-	public String getMensagemCompleta() throws Exception{
-		//TODO VERIFICAR PORQUE PODE SER LANCADO ERRO DAQUI
+	public String getMensagemCompleta() {
 		StringBuilder saida = new StringBuilder();
 		saida.append(getMensagemSemHashtag());
 		for (String string : hashtags) {
@@ -143,22 +136,22 @@ public class Postagem {
 		}
 		return saida.toString().trim();
 	}
-	
+
 	public String getHashtags() {
 		StringBuilder saida = new StringBuilder();
 		saida.append("");
-		if (hashtags.size() > 0){
+		if (hashtags.size() > 0) {
 			for (int i = 0; i < hashtags.size(); i++) {
-			saida.append(hashtags.get(i));
+				saida.append(hashtags.get(i));
 				if (i != hashtags.size() - 1) {
 					saida.append(",");
-				}	
+				}
 			}
-		}	
+		}
 		return saida.toString();
 	}
-	
-	public List<String> getListaHashtags(){
+
+	public List<String> getListaHashtags() {
 		return this.hashtags;
 	}
 
@@ -182,9 +175,8 @@ public class Postagem {
 				return arquivos.get(indice - 1);
 			}
 		} catch (Exception e) {
-			throw new Exception("Item #" + indice
-					+ " nao existe nesse post, ele possui apenas "
-					+ conteudo.size() + " itens distintos.");
+			throw new Exception("Item #" + indice + " nao existe nesse post, ele possui apenas " + conteudo.size()
+					+ " itens distintos.");
 		}
 	}
 
@@ -214,6 +206,17 @@ public class Postagem {
 		if (!hashtags.contains(hashtag)) {
 			this.hashtags.add(hashtag);
 			this.mensagem.concat(" " + hashtag);
+		}
+	}
+
+	@Override
+	public int compareTo(Postagem outroPost) {
+		if (this.data.isBefore(outroPost.getDateTime())) {
+			return -1;
+		}else if(this.data.isAfter(outroPost.getDateTime())){
+			return 1;
+		}else{
+			return 0;
 		}
 	}
 

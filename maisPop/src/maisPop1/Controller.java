@@ -1,17 +1,21 @@
-package maisPop;
+package maisPop1;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class Controller {
+public class Controller implements Serializable {
+
+	private static final long serialVersionUID = 1L;
 
 	private ArrayList<Usuario> bancoDeUsuarios;
 
 	private Usuario usuarioLogado;
+
 	private UsuarioFactory usuarioFactory;
 	private TrendingTopics trendingTopics;
-	
+
 	private final String ERRO_DE_ATUALIZACAO = "Erro na atualizacao de perfil. ";
 
 	public Controller() {
@@ -31,6 +35,10 @@ public class Controller {
 		usuarioLogado.addAmigo(usuarioEmail);
 		usr.addAmigo(usuarioLogado.getEmail());
 		adicionaNotificacao(usuarioEmail, usuarioLogado.getNome() + " aceitou sua amizade.");
+	}
+	
+	public Usuario getUsuarioLogado() {
+		return usuarioLogado;
 	}
 
 	public void adicionaAmigo(String usuarioEmail) throws Exception {
@@ -103,16 +111,6 @@ public class Controller {
 		Postagem post = usuarioLogado.criaPost(mensagem, data);
 		usuarioLogado.adicionaNoMural(post);
 	}
-	
-	private void insereHashtagsNoTT(List<String> listaDeHashtags) {
-		for (String hashtag : listaDeHashtags) {
-			if (trendingTopics.hasHashtag(hashtag)) {
-				trendingTopics.getHashtag(hashtag).addQuantidade();
-			} else {
-				trendingTopics.add(new Tupla(hashtag,1));;
-			}
-		}
-	}
 
 	public void curtirPost(String usuarioEmail, int post) throws Exception {
 		if (usuarioLogado == null) {
@@ -142,12 +140,6 @@ public class Controller {
 
 		adicionaNotificacao(usuarioEmail,
 				usuarioLogado.getNome() + " rejeitou seu post de " + usr.getPost(Usuario.DATA_DA_POSTAGEM, post) + ".");
-	}
-
-	public void fechaSistema() throws Exception {
-		if (usuarioLogado != null) {
-			throw new Exception("Nao foi possivel fechar o sistema. Um usuarix ainda esta logadx.");
-		}
 	}
 
 	public String getConteudoPost(int indice, int post) throws Exception {
@@ -241,10 +233,6 @@ public class Controller {
 		return p.getRejeitadas();
 	}
 
-	public void iniciaSistema() {
-		// TODO Criar arquivos.
-	}
-
 	public Usuario loga(String email, String senha) throws Exception {
 		Usuario usrTemp;
 		try {
@@ -326,18 +314,12 @@ public class Controller {
 		}
 		return false;
 	}
-	
+
 	public List<Usuario> getMaisPopulares() {
 		List<Usuario> saida = new ArrayList<>();
 		Collections.sort(bancoDeUsuarios);
-		if (bancoDeUsuarios.size() < 3) {
-			for (int i = bancoDeUsuarios.size(); i > 0; i--) {
-				saida.add(bancoDeUsuarios.get(bancoDeUsuarios.size() - i));
-			}
-		} else {
-			for (int i = 3; i > 0; i--) {
-				saida.add(bancoDeUsuarios.get(bancoDeUsuarios.size() - i));
-			}
+		for (int i = 3; i > 0; i--) {
+			saida.add(bancoDeUsuarios.get(bancoDeUsuarios.size() - i));
 		}
 		return saida;
 	}
@@ -345,48 +327,50 @@ public class Controller {
 	public List<Usuario> getMenosPopulares() {
 		List<Usuario> saida = new ArrayList<>();
 		Collections.sort(bancoDeUsuarios);
-		if (bancoDeUsuarios.size() < 3) {
-			for (int i = 0; i < bancoDeUsuarios.size(); i--) {
-				saida.add(bancoDeUsuarios.get(i));
-			}
-		} else {
-			for (int i = 0; i < 3; i++) {
-				saida.add(bancoDeUsuarios.get(i));
-			}
+		for (int i = 0; i < 3; i++) {
+			saida.add(bancoDeUsuarios.get(i));
 		}
 		return saida;
 	}
 
 	public String atualizaRanking() {
-		
 		List<Usuario> maisPopulares = getMaisPopulares();
 		List<Usuario> menosPopulares = getMenosPopulares();
 
-		String saida = "Mais Populares: (1) " + maisPopulares.get(2)
-				+ "; (2) " + maisPopulares.get(1)
-				+ "; (3) " + maisPopulares.get(0) + "; | ";
-		saida += "Menos Populares: (1) " + menosPopulares.get(0)
-				+ "; (2) " + menosPopulares.get(1)
-				+ "; (3) " + menosPopulares.get(2) + ";";
+		String saida = "Mais Populares: (1) " + maisPopulares.get(2) + "; (2) " + maisPopulares.get(1) + "; (3) "
+				+ maisPopulares.get(0) + "; | ";
+		saida += "Menos Populares: (1) " + menosPopulares.get(0) + "; (2) " + menosPopulares.get(1) + "; (3) "
+				+ menosPopulares.get(2) + ";";
 		return saida;
 	}
 
-	public String atualizaTrendingTopics() {
-		if (trendingTopics.size() == 0) {
-			for (Usuario usuario : bancoDeUsuarios) {
-				for (Postagem p : usuario.getMural()) {
-					insereHashtagsNoTT(p.getListaHashtags());
-				}
+	private void insereHashtagsNoTT(List<String> listaDeHashtags) {
+		for (String hashtag : listaDeHashtags) {
+			if (trendingTopics.hasHashtag(hashtag)) {
+				trendingTopics.getHashtag(hashtag).addQuantidade();
+			} else {
+				trendingTopics.add(new Tupla(hashtag));
 			}
-		} else {
-			this.trendingTopics = new TrendingTopics();
-			for (Usuario usuario : bancoDeUsuarios) {
-				for (Postagem p : usuario.getMural()) {
-					insereHashtagsNoTT(p.getListaHashtags());
-				}
-			}	
 		}
+	}
+
+	public String atualizaTrendingTopics() {
+
+		this.trendingTopics = new TrendingTopics();
+
+		for (Usuario usuario : bancoDeUsuarios) {
+			for (Postagem p : usuario.getMural()) {
+				insereHashtagsNoTT(p.getListaHashtags());
+			}
+		}
+
 		return this.trendingTopics.toString();
+	}
+
+	public int getTotalPosts() {
+
+		return usuarioLogado.getTotalPosts();
+
 	}
 
 }

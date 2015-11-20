@@ -1,9 +1,13 @@
-package maisPop;
+package maisPop1;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.List;
 
-public class Usuario implements Comparable<Usuario> {
+public class Usuario implements Comparable<Usuario>, Serializable{
+	
+	private static final long serialVersionUID = 1L;
 	public static String NOME = "Nome";
 	public static String EMAIL = "E-mail";
 	public static String SENHA = "Senha";
@@ -21,13 +25,13 @@ public class Usuario implements Comparable<Usuario> {
 	private ArrayList<String> amigos;
 	private ArrayList<Postagem> mural;
 
-	public Usuario(String nome, String email, String senha, String dataDeNasc,
-			String imagem) throws Exception {
-		setNome(nome);
-		setEmail(email);
-		setSenha(senha);
-		setDataDeNascimento(dataDeNasc);
-		setCaminhoImagem(imagem);
+	public Usuario(String nome, String email, String senha, String dataDeNasc, String imagem) throws Exception {
+		this.nome = nome;
+		this.email = email;
+		this.senha = senha;
+		this.dataDeNascimento = dataDeNasc;
+		this.caminhoImagem = imagem;
+		this.pop = 0;
 		this.amigos = new ArrayList<String>();
 		this.notificacoes = new ArrayList<String>();
 		this.solicitacoes = new ArrayList<String>();
@@ -82,8 +86,8 @@ public class Usuario implements Comparable<Usuario> {
 	public String getSenha() {
 		return senha;
 	}
-	
-	public ArrayList<Postagem> getMural(){
+
+	public ArrayList<Postagem> getMural() {
 		return this.mural;
 	}
 
@@ -130,13 +134,13 @@ public class Usuario implements Comparable<Usuario> {
 
 	public Postagem getPost(int post) throws Exception {
 		Postagem p;
-		try{
+		try {
 			p = mural.get(post);
-		}catch(Exception e){
-			throw new Exception("Post #" + post + " nao existe. Usuarix possui apenas " + getQtdPost() + " post(s).");
+		} catch (Exception e) {
+			throw new Exception("Post #" + post + " nao existe. Usuarix possui apenas " + getTotalPosts() + " post(s).");
 		}
 		return p;
-		
+
 	}
 
 	public String getPost(String atributo, int post) throws Exception {
@@ -144,8 +148,7 @@ public class Usuario implements Comparable<Usuario> {
 		try {
 			p = mural.get(post);
 		} catch (Exception e) {
-			throw new Exception("indice do post fora do range. Erro: "
-					+ e.getMessage());
+			throw new Exception("indice do post fora do range. Erro: " + e.getMessage());
 		}
 		if (atributo.equals(MENSAGEM)) {
 			return p.getMensagemSemHashtag();
@@ -160,8 +163,7 @@ public class Usuario implements Comparable<Usuario> {
 
 	public String getConteudoPost(int indice, int post) throws Exception {
 		if (indice < 0) {
-			throw new Exception(
-					"Requisicao invalida. O indice deve ser maior ou igual a zero.");
+			throw new Exception("Requisicao invalida. O indice deve ser maior ou igual a zero.");
 		}
 		Postagem p;
 		p = mural.get(post);
@@ -171,12 +173,12 @@ public class Usuario implements Comparable<Usuario> {
 	public String getPopularidade() {
 		return this.popularidade.toString();
 	}
-	
-	public void curtirPost(Postagem p){
+
+	public void curtirPost(Postagem p) {
 		this.popularidade.curtirPost(p);
 	}
-	
-	public void rejeitaPost(Postagem p){
+
+	public void rejeitaPost(Postagem p) {
 		this.popularidade.rejeitaPost(p);
 	}
 
@@ -184,14 +186,15 @@ public class Usuario implements Comparable<Usuario> {
 		return this.pop;
 	}
 
-	public void adicionaPops(int i){
-		atualizaPop();
+	public void adicionaPops(int i) {
 		this.pop += i;
-	}
-	
-	public void diminuiPops(int i){
 		atualizaPop();
+	}
+
+	public void diminuiPops(int i) {
 		this.pop -= i;
+		atualizaPop();
+
 	}
 
 	public void atualizaPop() {
@@ -199,7 +202,7 @@ public class Usuario implements Comparable<Usuario> {
 			this.popularidade = new NormalPop();
 		} else if (this.pop <= 1000) {
 			this.popularidade = new CelebridadePop();
-		} else if (this.pop > 1000){
+		} else if (this.pop > 1000) {
 			this.popularidade = new IconePop();
 		}
 	}
@@ -216,24 +219,27 @@ public class Usuario implements Comparable<Usuario> {
 		return 0;
 	}
 
-	public int getQtdPost() {
+	public int getTotalPosts() {
 		return mural.size();
 	}
-	
-	public int getValorCurtida(Postagem p){
+
+	public int getValorCurtida(Postagem p) {
 		return this.popularidade.getValorCurtida(p);
 	}
-	
-	public int getValorRejeita(Postagem p){
+
+	public int getValorRejeita(Postagem p) {
 		return this.popularidade.getValorRejeita(p);
 	}
-	
+
 	public Popularidade getTipoPopularidade() {
 		return this.popularidade;
 	}
-	
-	public String toString(){
+
+	public String toString() {
 		return this.nome + " " + this.pop;
 	}
-
+	
+	public List<Postagem> fornecePosts(){
+		return this.popularidade.fornecePosts(this.mural);
+	}
 }
